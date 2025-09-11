@@ -8,10 +8,10 @@ function Returns() {
         
         <div style={{maxWidth: '800px', margin: '0 auto'}}>
           <section style={{marginBottom: '3rem'}}>
-            <h2>30-Day Return Policy</h2>
+            <h2>30-Day Exchange Policy</h2>
             <p style={{fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We want you to love your Nudes purchase! If you're not completely satisfied, 
-              you can return your item within 30 days of delivery for a full refund.
+              We want you to love your Lume purchase! If you're not completely satisfied, 
+              you can exchange your item within 30 days of delivery. Please note: we offer exchanges only, no cash refunds.
             </p>
           </section>
 
@@ -29,7 +29,7 @@ function Returns() {
           <section style={{marginBottom: '3rem'}}>
             <h2>How to Return</h2>
             <ol style={{fontSize: '1.1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>Contact our customer service team at hello@nudes.com</li>
+              <li>Contact our customer service team at sales@lumebylee.co.za</li>
               <li>Include your order number and reason for return</li>
               <li>We'll send you a prepaid return label within 24 hours</li>
               <li>Package your item securely and attach the return label</li>
@@ -38,26 +38,27 @@ function Returns() {
           </section>
 
           <section style={{marginBottom: '3rem'}}>
-            <h2>Exchanges</h2>
+            <h2>Exchanges Only</h2>
             <p style={{fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              Need a different size or color? We offer free exchanges within 30 days. 
-              Simply follow the return process above and let us know what you'd like to exchange for.
+              We offer exchanges for different sizes or colors within 30 days. 
+              Simply follow the return process above and let us know what you'd like to exchange for. 
+              <strong>Please note: No cash refunds are available.</strong>
             </p>
           </section>
 
           <section style={{marginBottom: '3rem'}}>
-            <h2>Refund Timeline</h2>
+            <h2>Exchange Timeline</h2>
             <ul style={{fontSize: '1.1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>We process returns within 3-5 business days of receiving your item</li>
-              <li>Refunds are issued to your original payment method</li>
-              <li>Credit card refunds typically appear within 5-7 business days</li>
-              <li>PayPal refunds are usually instant</li>
+              <li>We process exchanges within 3-5 business days of receiving your item</li>
+              <li>Your new item will be shipped once we receive your return</li>
+              <li>Exchange shipping is free within South Africa</li>
+              <li>You'll receive tracking information once your exchange ships</li>
             </ul>
           </section>
 
           <div style={{textAlign: 'center', padding: '2rem', background: '#F5F5DC', borderRadius: '10px'}}>
-            <h3>Questions about returns?</h3>
-            <p>Contact us at hello@nudes.com or call +1 (555) 123-4567</p>
+            <h3>Questions about exchanges?</h3>
+            <p>Contact us at sales@lumebylee.co.za or call 074 485 0947</p>
           </div>
         </div>
       </div>

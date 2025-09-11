@@ -31,6 +31,13 @@ function Footer() {
             </ul>
           </div>
           <div className="footer-section">
+            <h3>Contact</h3>
+            <ul>
+              <li><a href="mailto:sales@lumebylee.co.za">sales@lumebylee.co.za</a></li>
+              <li><a href="tel:0744850947">074 485 0947</a></li>
+            </ul>
+          </div>
+          <div className="footer-section">
             <h3>Follow Us</h3>
             <ul>
               <li><a href="https://www.instagram.com/by.langelihle/" target="_blank" rel="noopener noreferrer">📷 Instagram</a></li>
@@ -39,7 +46,7 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2024 Lume by Langelihle. All rights reserved.</p>
+          <p>&copy; 2025 Lume by Langelihle. All rights reserved.</p>
         </div>
       </div>
     </footer>

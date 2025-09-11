@@ -34,10 +34,6 @@ function About() {
               </p>
               
               <p style={{marginBottom: '1.5rem'}}>
-                The official launch is coming very soon — and trust me, you don't want to miss the drop!
-              </p>
-              
-              <p style={{marginBottom: '1.5rem'}}>
                 Thank you for being part of this new journey. Here's to rediscovering dreams, showing up boldly, and looking damn good while doing it.
               </p>
               
