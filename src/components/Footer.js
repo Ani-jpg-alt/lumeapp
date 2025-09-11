@@ -33,14 +33,13 @@ function Footer() {
           <div className="footer-section">
             <h3>Follow Us</h3>
             <ul>
-              <li><a href="#" onClick={(e) => e.preventDefault()}>Instagram</a></li>
-              <li><a href="#" onClick={(e) => e.preventDefault()}>Facebook</a></li>
-              <li><a href="#" onClick={(e) => e.preventDefault()}>Pinterest</a></li>
+              <li><a href="https://instagram.com/lumebylangelihle" target="_blank" rel="noopener noreferrer">📷 Instagram</a></li>
+              <li><a href="https://tiktok.com/@lumebylangelihle" target="_blank" rel="noopener noreferrer">🎥 TikTok</a></li>
             </ul>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2024 Nudes. All rights reserved.</p>
+          <p>&copy; 2024 Lume by Langelihle. All rights reserved.</p>
         </div>
       </div>
     </footer>
