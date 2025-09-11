@@ -26,28 +26,28 @@ function Shop() {
           <button 
             className="btn"
             onClick={() => setFilter('all')}
-            style={{background: filter === 'all' ? '#8B4A9C' : '#F0F0F0', color: filter === 'all' ? 'white' : '#2D2D2D'}}
+            style={{background: filter === 'all' ? '#000000' : '#F5F5DC', color: filter === 'all' ? 'white' : '#2D2D2D', border: filter === 'all' ? 'none' : '1px solid #D2B48C'}}
           >
             All
           </button>
           <button 
             className="btn"
             onClick={() => setFilter('dresses')}
-            style={{background: filter === 'dresses' ? '#8B4A9C' : '#F0F0F0', color: filter === 'dresses' ? 'white' : '#2D2D2D'}}
+            style={{background: filter === 'dresses' ? '#000000' : '#F5F5DC', color: filter === 'dresses' ? 'white' : '#2D2D2D', border: filter === 'dresses' ? 'none' : '1px solid #D2B48C'}}
           >
             Dresses
           </button>
           <button 
             className="btn"
             onClick={() => setFilter('accessories')}
-            style={{background: filter === 'accessories' ? '#8B4A9C' : '#F0F0F0', color: filter === 'accessories' ? 'white' : '#2D2D2D'}}
+            style={{background: filter === 'accessories' ? '#000000' : '#F5F5DC', color: filter === 'accessories' ? 'white' : '#2D2D2D', border: filter === 'accessories' ? 'none' : '1px solid #D2B48C'}}
           >
             Accessories
           </button>
           <button 
             className="btn"
             onClick={() => setFilter('sale')}
-            style={{background: filter === 'sale' ? '#8B4A9C' : '#F0F0F0', color: filter === 'sale' ? 'white' : '#2D2D2D'}}
+            style={{background: filter === 'sale' ? '#000000' : '#F5F5DC', color: filter === 'sale' ? 'white' : '#2D2D2D', border: filter === 'sale' ? 'none' : '1px solid #D2B48C'}}
           >
             Sale
           </button>

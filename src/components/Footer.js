@@ -33,8 +33,8 @@ function Footer() {
           <div className="footer-section">
             <h3>Follow Us</h3>
             <ul>
-              <li><a href="https://instagram.com/lumebylangelihle" target="_blank" rel="noopener noreferrer">📷 Instagram</a></li>
-              <li><a href="https://tiktok.com/@lumebylangelihle" target="_blank" rel="noopener noreferrer">🎥 TikTok</a></li>
+              <li><a href="https://www.instagram.com/by.langelihle/" target="_blank" rel="noopener noreferrer">📷 Instagram</a></li>
+              <li><a href="https://www.tiktok.com/@by.langelihle" target="_blank" rel="noopener noreferrer">🎥 TikTok</a></li>
             </ul>
           </div>
         </div>

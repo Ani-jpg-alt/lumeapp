@@ -7,8 +7,8 @@ function About() {
         <h1>A Dream Reignited</h1>
         
         <div style={{maxWidth: '800px', margin: '0 auto'}}>
-          <section style={{background: 'linear-gradient(135deg, #F5F5DC 0%, #E6D7F0 100%)', padding: '3rem', borderRadius: '20px', marginBottom: '3rem'}}>
-            <h2 style={{textAlign: 'center', marginBottom: '2rem', color: '#8B4A9C'}}>The Birth of Lume by Langelihle</h2>
+          <section style={{background: 'linear-gradient(135deg, #F5F5DC 0%, #E8D5C4 100%)', padding: '3rem', borderRadius: '20px', marginBottom: '3rem'}}>
+            <h2 style={{textAlign: 'center', marginBottom: '2rem', color: '#000000'}}>The Birth of Lume by Langelihle</h2>
             
             <div style={{fontSize: '1.1rem', lineHeight: '1.8', color: '#2D2D2D'}}>
               <p style={{marginBottom: '1.5rem'}}>
@@ -22,7 +22,7 @@ function About() {
               </p>
               
               <p style={{marginBottom: '1.5rem'}}>
-                So here I am, turning passion into purpose, with the launch of my very own online boutique: <strong style={{color: '#8B4A9C'}}>Lume by Langelihle</strong>.
+                So here I am, turning passion into purpose, with the launch of my very own online boutique: <strong style={{color: '#000000'}}>Lume by Langelihle</strong>.
               </p>
               
               <p style={{marginBottom: '1.5rem'}}>
@@ -43,7 +43,7 @@ function About() {
               
               <div style={{textAlign: 'right', marginTop: '2rem', fontStyle: 'italic'}}>
                 <p><strong>With love,</strong></p>
-                <p><strong style={{color: '#8B4A9C'}}>Langelihle Mpanza</strong></p>
+                <p><strong style={{color: '#000000'}}>Langelihle Mpanza</strong></p>
                 <p>Founder, Lume by Langelihle</p>
               </div>
             </div>

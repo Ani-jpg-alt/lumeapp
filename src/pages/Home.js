@@ -19,11 +19,11 @@ function Home() {
       {/* Hero Section */}
       <section className="hero">
         <div className="container">
-          <div style={{background: '#C8A8D8', color: 'white', padding: '8px', textAlign: 'center', fontSize: '0.9rem', fontWeight: '600', marginBottom: '2rem'}}>
+          <div style={{background: 'rgba(0,0,0,0.8)', color: 'white', padding: '8px', textAlign: 'center', fontSize: '0.9rem', fontWeight: '600', marginBottom: '2rem', borderRadius: '20px'}}>
             🚚 FREE SHIPPING ON ORDERS OVER R500 | 🔄 30-DAY FREE RETURNS
           </div>
           <h1>New Season, New You</h1>
-          <p>Discover our curated collection of dreamy dresses in soft nude and lavender tones</p>
+          <p>Discover our curated collection of dreamy dresses in soft nude tones</p>
           <Link to="/shop" className="btn">Shop Now</Link>
         </div>
       </section>
@@ -54,36 +54,36 @@ function Home() {
       </section>
 
       {/* Perfect Pairs - Cheerleader Effect */}
-      <section className="section" style={{background: '#F9F9F9'}}>
+      <section className="section" style={{background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(15px)', margin: '3rem 0', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.1)'}}>
         <div className="container">
           <h2>Perfect Together</h2>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem'}}>
-            <div style={{background: 'white', borderRadius: '8px', padding: '1.5rem', border: '1px solid #F0F0F0'}}>
+            <div style={{background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderRadius: '12px', padding: '1.5rem', border: '1px solid rgba(255, 255, 255, 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.1)'}}>
               <div style={{display: 'flex', gap: '1rem', marginBottom: '1rem'}}>
-                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E6D7F0 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#8B7B93'}}>Silk Midi Dress</div>
-                <div style={{width: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C8A8D8', fontSize: '1.2rem'}}>+</div>
-                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E6D7F0 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#8B7B93'}}>Chain Waist Band</div>
+                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E8D5C4 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#2D2D2D'}}>Silk Midi Dress</div>
+                <div style={{width: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#D2B48C', fontSize: '1.2rem'}}>+</div>
+                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E8D5C4 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#2D2D2D'}}>Chain Waist Band</div>
               </div>
-              <h3 style={{marginBottom: '0.5rem', color: '#6B5B73'}}>Silk Midi + Chain Belt</h3>
-              <p style={{fontSize: '0.9rem', color: '#8B7B93', marginBottom: '1rem'}}>Elevate your silhouette</p>
+              <h3 style={{marginBottom: '0.5rem', color: '#1A1A1A'}}>Silk Midi + Chain Belt</h3>
+              <p style={{fontSize: '0.9rem', color: '#2D2D2D', marginBottom: '1rem'}}>Elevate your silhouette</p>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
                 <span style={{textDecoration: 'line-through', color: '#999'}}>R2,408</span>
-                <span style={{color: '#C8A8D8', fontWeight: '600', fontSize: '1.1rem'}}>R2,199</span>
+                <span style={{color: '#D2B48C', fontWeight: '600', fontSize: '1.1rem'}}>R2,199</span>
               </div>
               <button className="btn" style={{width: '100%'}}>Get This Look</button>
             </div>
             
-            <div style={{background: 'white', borderRadius: '8px', padding: '1.5rem', border: '1px solid #F0F0F0'}}>
+            <div style={{background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', borderRadius: '12px', padding: '1.5rem', border: '1px solid rgba(255, 255, 255, 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.1)'}}>
               <div style={{display: 'flex', gap: '1rem', marginBottom: '1rem'}}>
-                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E6D7F0 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#8B7B93'}}>Linen Wrap Dress</div>
-                <div style={{width: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C8A8D8', fontSize: '1.2rem'}}>+</div>
-                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E6D7F0 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#8B7B93'}}>Leather Waist Band</div>
+                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E8D5C4 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#2D2D2D'}}>Linen Wrap Dress</div>
+                <div style={{width: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#D2B48C', fontSize: '1.2rem'}}>+</div>
+                <div style={{flex: 1, height: '150px', background: 'linear-gradient(135deg, #F5F5DC 0%, #E8D5C4 100%)', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', color: '#2D2D2D'}}>Leather Waist Band</div>
               </div>
-              <h3 style={{marginBottom: '0.5rem', color: '#6B5B73'}}>Linen Wrap + Leather Belt</h3>
-              <p style={{fontSize: '0.9rem', color: '#8B7B93', marginBottom: '1rem'}}>Effortless chic vibes</p>
+              <h3 style={{marginBottom: '0.5rem', color: '#1A1A1A'}}>Linen Wrap + Leather Belt</h3>
+              <p style={{fontSize: '0.9rem', color: '#2D2D2D', marginBottom: '1rem'}}>Effortless chic vibes</p>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
                 <span style={{textDecoration: 'line-through', color: '#999'}}>R1,978</span>
-                <span style={{color: '#C8A8D8', fontWeight: '600', fontSize: '1.1rem'}}>R1,799</span>
+                <span style={{color: '#D2B48C', fontWeight: '600', fontSize: '1.1rem'}}>R1,799</span>
               </div>
               <button className="btn" style={{width: '100%'}}>Get This Look</button>
             </div>
@@ -92,7 +92,7 @@ function Home() {
       </section>
 
       {/* Shop Categories */}
-      <section className="section" style={{background: '#F9F9F9'}}>
+      <section className="section" style={{background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(15px)', margin: '3rem 0', borderRadius: '20px', border: '1px solid rgba(255, 255, 255, 0.3)', boxShadow: '0 8px 32px rgba(0,0,0,0.1)'}}>
         <div className="container">
           <h2>Shop by Category</h2>
           <div className="product-grid">
@@ -102,7 +102,7 @@ function Home() {
               </div>
               <div className="product-info">
                 <h3>Dresses</h3>
-                <p style={{color: '#8B7B93', marginBottom: '1rem', fontSize: '0.9rem'}}>Effortless elegance for every occasion</p>
+                <p style={{color: '#2D2D2D', marginBottom: '1rem', fontSize: '0.9rem'}}>Effortless elegance for every occasion</p>
                 <Link to="/shop" className="btn">Shop Dresses</Link>
               </div>
             </div>
@@ -112,7 +112,7 @@ function Home() {
               </div>
               <div className="product-info">
                 <h3>Accessories</h3>
-                <p style={{color: '#8B7B93', marginBottom: '1rem', fontSize: '0.9rem'}}>Complete your perfect look</p>
+                <p style={{color: '#2D2D2D', marginBottom: '1rem', fontSize: '0.9rem'}}>Complete your perfect look</p>
                 <Link to="/shop" className="btn">Shop Accessories</Link>
               </div>
             </div>
