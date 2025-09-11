@@ -4,7 +4,9 @@ function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: ''
+    subject: '',
+    message: '',
+    captcha: ''
   });
 
   const handleChange = (e) => {
@@ -17,21 +19,19 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-    setFormData({ name: '', email: '', subject: '' });
+    setFormData({ name: '', email: '', subject: '', message: '', captcha: '' });
   };
 
   return (
     <div className="section">
       <div className="container">
-        <h1>Contact Us</h1>
+        <h1>Contact</h1>
         
         <div style={{maxWidth: '600px', margin: '0 auto'}}>
           {/* Contact Form */}
           <div>
-            <h2>Get in Touch</h2>
             <p style={{marginBottom: '2rem'}}>
-              Have a question about our products, need sizing help, or want to share feedback? 
-              We'd love to hear from you!
+              Questions about products, sizing, or feedback? We'd love to hear from you.
             </p>
             
             <form onSubmit={handleSubmit}>
@@ -78,7 +78,30 @@ function Contact() {
                 </select>
               </div>
               
-
+              <div className="form-group">
+                <label htmlFor="message">Message *</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                ></textarea>
+              </div>
+              
+              <div className="form-group">
+                <label htmlFor="captcha">What is 5 + 3? *</label>
+                <input
+                  type="text"
+                  id="captcha"
+                  name="captcha"
+                  value={formData.captcha}
+                  onChange={handleChange}
+                  placeholder="Enter the answer"
+                  required
+                />
+              </div>
               
               <button type="submit" className="btn" style={{width: '100%'}}>
                 Send Message
@@ -88,7 +111,7 @@ function Contact() {
 
           {/* Contact Information */}
           <div>
-            <h2>Contact Information</h2>
+
             <div style={{background: 'rgba(212, 187, 255, 0.1)', padding: '2rem', borderRadius: '20px'}}>
               <p style={{marginBottom: '1rem'}}><strong>Email:</strong> privacy@lumebylee.co.za</p>
               <p><strong>Phone:</strong> 074 485 0947</p>
