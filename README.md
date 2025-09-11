@@ -1,12 +1,12 @@
-# Nudes - Summer Dresses Website
+# Lume - Summer Dresses Website
 
-A modern, responsive e-commerce website for Nudes clothing brand, specializing in summer dresses in beautiful nude tones.
+A modern, responsive e-commerce website for Lume clothing brand, specializing in summer dresses in beautiful nude tones.
 
 ## Features
 
 - **Home Page**: Hero banner, new arrivals, shop categories, and sale section
 - **Shop Page**: Product catalog with filtering (dresses, waist bands, sale items)
-- **About Us**: Lihle's story and brand mission
+- **About Us**: Langelihle's story and brand mission
 - **Size Guide**: Comprehensive sizing information and measurement guide
 - **Contact Page**: Contact form and business information
 - **Footer Pages**: FAQ, Returns Policy, Shipping & Delivery, Terms & Conditions, Privacy Policy, Order Tracking
@@ -47,11 +47,11 @@ npm run build
 
 ## Brand Colors
 
-- Primary: #F5F5DC (Beige)
-- Secondary: #D2B48C (Tan)
-- Text: #8B7355 (Dark Khaki)
-- Background: #FEFEFE (Off White)
+- Primary: #D4BBFF (Soft Lavender)
+- Secondary: #F8E8FF (Light Lavender)
+- Text: #1a1a1a (Dark Grey)
+- Background: Lavender Gradient
 
 ## Contact
 
-For questions about the website, contact hello@nudes.com
+For questions about the website, contact privacy@lumebylee.co.za
