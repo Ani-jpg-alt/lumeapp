@@ -29,7 +29,7 @@ function Returns() {
           <section style={{marginBottom: '3rem'}}>
             <h2>How to Return</h2>
             <ol style={{fontSize: '1.1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>Contact our customer service team at sales@lumebylee.co.za</li>
+              <li>Contact our customer service team at privacy@lumebylee.co.za</li>
               <li>Include your order number and reason for return</li>
               <li>We'll send you a prepaid return label within 24 hours</li>
               <li>Package your item securely and attach the return label</li>
@@ -58,7 +58,7 @@ function Returns() {
 
           <div style={{textAlign: 'center', padding: '2rem', background: '#F5F5DC', borderRadius: '10px'}}>
             <h3>Questions about exchanges?</h3>
-            <p>Contact us at sales@lumebylee.co.za or call 074 485 0947</p>
+            <p>Contact us at privacy@lumebylee.co.za or call 074 485 0947</p>
           </div>
         </div>
       </div>

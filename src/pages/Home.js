@@ -16,8 +16,8 @@ function Home() {
       {/* Hero Section */}
       <section className="hero">
         <div className="container">
-          <h1>CONFIDENCE</h1>
-          <p>Unleash your inner power. Radiate energy. Embrace your glow.</p>
+          <h1>DRESS TO GLOW</h1>
+          <p>Stunning dresses that make you feel unstoppable. Every piece tells your story.</p>
           <Link to="/shop" className="btn">SHOP NOW</Link>
         </div>
       </section>
@@ -25,7 +25,7 @@ function Home() {
       {/* Products */}
       <section className="section">
         <div className="container">
-          <h2>POWER PIECES</h2>
+          <h2>Make A Statement This Summer</h2>
           <div className="product-grid">
             {products.map(product => (
               <div key={product.id} className="product-card">
@@ -35,7 +35,7 @@ function Home() {
                     position: 'absolute', 
                     top: '20px', 
                     right: '20px', 
-                    background: 'rgba(230, 168, 208, 0.9)', 
+                    background: 'rgba(212, 187, 255, 0.9)', 
                     color: '#1a1a1a', 
                     padding: '8px 12px', 
                     borderRadius: '20px', 
@@ -62,7 +62,7 @@ function Home() {
 
       {/* Energy Section */}
       <section className="section" style={{
-        background: 'linear-gradient(135deg, rgba(230, 168, 208, 0.1), rgba(250, 218, 221, 0.1))'
+        background: 'linear-gradient(135deg, rgba(212, 187, 255, 0.1), rgba(248, 232, 255, 0.1))',
         borderRadius: '30px',
         margin: '3rem 0'
       }}>
@@ -74,7 +74,7 @@ function Home() {
               color: 'white', 
               lineHeight: '1.8', 
               fontWeight: '600',
-              textShadow: '0 0 8px rgba(230, 168, 208, 0.4), 0 1px 2px rgba(0,0,0,0.5)',
+              textShadow: '0 0 8px rgba(212, 187, 255, 0.4), 0 1px 2px rgba(0,0,0,0.5)',
               marginBottom: '2rem'
             }}>
               Lume is all about confidence, energy, and glow. We curate pieces that empower 

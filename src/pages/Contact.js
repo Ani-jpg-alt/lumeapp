@@ -4,8 +4,7 @@ function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '',
-    message: ''
+    subject: ''
   });
 
   const handleChange = (e) => {
@@ -18,7 +17,7 @@ function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setFormData({ name: '', email: '', subject: '' });
   };
 
   return (
@@ -26,7 +25,7 @@ function Contact() {
       <div className="container">
         <h1>Contact Us</h1>
         
-        <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '3rem', maxWidth: '1000px', margin: '0 auto'}}>
+        <div style={{maxWidth: '600px', margin: '0 auto'}}>
           {/* Contact Form */}
           <div>
             <h2>Get in Touch</h2>
@@ -79,17 +78,7 @@ function Contact() {
                 </select>
               </div>
               
-              <div className="form-group">
-                <label htmlFor="message">Message *</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="5"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                ></textarea>
-              </div>
+
               
               <button type="submit" className="btn" style={{width: '100%'}}>
                 Send Message
@@ -100,36 +89,9 @@ function Contact() {
           {/* Contact Information */}
           <div>
             <h2>Contact Information</h2>
-            
-            <div style={{background: '#F5F5DC', padding: '2rem', borderRadius: '10px', marginBottom: '2rem'}}>
-              <h3 style={{color: '#D2B48C', marginBottom: '1rem'}}>Customer Service</h3>
-              <p><strong>Email:</strong> hello@nudes.com</p>
-              <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p><strong>Hours:</strong> Monday - Friday, 9AM - 6PM EST</p>
-            </div>
-
-            <div style={{background: '#F5F5DC', padding: '2rem', borderRadius: '10px', marginBottom: '2rem'}}>
-              <h3 style={{color: '#D2B48C', marginBottom: '1rem'}}>Business Address</h3>
-              <p>Nudes Fashion<br/>
-              123 Fashion Avenue<br/>
-              New York, NY 10001<br/>
-              United States</p>
-            </div>
-
-            <div style={{background: '#F5F5DC', padding: '2rem', borderRadius: '10px'}}>
-              <h3 style={{color: '#D2B48C', marginBottom: '1rem'}}>Response Times</h3>
-              <p><strong>Email:</strong> Within 24 hours</p>
-              <p><strong>Phone:</strong> Immediate during business hours</p>
-              <p><strong>Returns:</strong> Processed within 3-5 business days</p>
-            </div>
-
-            <div style={{marginTop: '2rem'}}>
-              <h3>Follow Us</h3>
-              <div style={{display: 'flex', gap: '1rem', marginTop: '1rem'}}>
-                <a href="#" onClick={(e) => e.preventDefault()} className="btn">Instagram</a>
-                <a href="#" onClick={(e) => e.preventDefault()} className="btn">Facebook</a>
-                <a href="#" onClick={(e) => e.preventDefault()} className="btn">Pinterest</a>
-              </div>
+            <div style={{background: 'rgba(212, 187, 255, 0.1)', padding: '2rem', borderRadius: '20px'}}>
+              <p style={{marginBottom: '1rem'}}><strong>Email:</strong> privacy@lumebylee.co.za</p>
+              <p><strong>Phone:</strong> 074 485 0947</p>
             </div>
           </div>
         </div>
