@@ -5,11 +5,7 @@ function Home() {
   const products = [
     { id: 1, name: 'Jean Dress', price: 'R300', image: '/jean-dress.jpg', images: ['/jean-dress.jpg', '/jean-dress-2.jpg'], description: 'Every girl NEEDS a Jean short dress this summer!!!', sizes: ['S', 'M', 'L', 'XL', 'XXL'] },
     { id: 2, name: 'Polka Dot Dress', price: 'R250', image: '/polka-dot-dress.jpg', images: ['/polka-dot-dress.jpg', '/polka-dot-dress-2.jpg'], description: 'We are stepping into summer with polka dots!', sizes: ['M', 'L', 'XL', 'XXL'] },
-    { id: 3, name: 'Two Piece', price: 'R350', image: '/two-piece.jpg', images: ['/two-piece.jpg', '/two-piece-2.jpg', '/two-piece-3.jpg'], description: 'Every girl deserves a playful two piece this summer.', colors: ['Pink', 'Blue', 'Green'], sizes: ['S', 'M', 'L', 'XL', 'XXL'] },
-    { id: 4, name: 'Linen Wrap Dress', price: 'R1,349', image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=500&fit=crop&auto=format&q=80' },
-    { id: 5, name: 'Cotton Sundress', price: 'R1,169', image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop&auto=format&q=80' },
-    { id: 6, name: 'Chiffon Maxi', price: 'R1,699', image: 'https://images.unsplash.com/photo-1566479179817-c0b5b4b4b1e8?w=400&h=500&fit=crop&auto=format&q=80' },
-    { id: 7, name: 'Summer Slip Dress', price: 'R809', image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=400&h=500&fit=crop&auto=format&q=80' }
+    { id: 3, name: 'Two Piece', price: 'R350', image: '/two-piece.jpg', images: ['/two-piece.jpg', '/two-piece-2.jpg', '/two-piece-3.jpg'], description: 'Every girl deserves a playful two piece this summer.', colors: ['Pink', 'Blue', 'Green'], sizes: ['S', 'M', 'L', 'XL', 'XXL'] }
   ];
 
   const categories = [
