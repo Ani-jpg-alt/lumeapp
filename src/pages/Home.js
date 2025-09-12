@@ -9,10 +9,9 @@ function Home() {
   ];
 
   const categories = [
-    { name: 'Midi', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=300&h=200&fit=crop&auto=format&q=80' },
-    { name: 'Maxi', image: 'https://images.unsplash.com/photo-1566479179817-c0b5b4b4b1e8?w=300&h=200&fit=crop&auto=format&q=80' },
-    { name: 'Summer', image: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&h=200&fit=crop&auto=format&q=80' },
-    { name: 'Sale', image: 'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=300&h=200&fit=crop&auto=format&q=80' }
+    { name: 'Dresses', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=300&h=200&fit=crop&auto=format&q=80' },
+    { name: 'Accessories', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop&auto=format&q=80' },
+    { name: 'Gym Sets', image: 'https://images.unsplash.com/photo-1506629905607-d405b7a30db9?w=300&h=200&fit=crop&auto=format&q=80' }
   ];
 
   return (

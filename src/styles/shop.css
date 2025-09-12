@@ -1,0 +1,69 @@
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: white;
+  color: #666;
+  border: 1px solid #e5e5e5;
+}
+
+.filter-btn[data-active="true"] {
+  background: #1a1a1a;
+  color: white;
+}
+
+.scarcity-message {
+  font-size: 0.8rem;
+  color: #FF6B6B;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.social-proof {
+  font-size: 0.8rem;
+  color: #8B7B93;
+  margin-bottom: 8px;
+}
+
+.sizes {
+  font-size: 0.9rem;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.product-btn {
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .filter-buttons {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-btn {
+    padding: 10px 16px;
+    font-size: 0.8rem;
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .scarcity-message,
+  .social-proof,
+  .sizes {
+    font-size: 0.75rem;
+  }
+}
