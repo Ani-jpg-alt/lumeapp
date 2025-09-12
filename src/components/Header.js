@@ -17,7 +17,7 @@ function Header() {
             <li><Link to="/size-guide">Size Guide</Link></li>
             <li><Link to="/contact">Contact</Link></li>
             <li style={{position: 'relative'}}>
-              <span style={{background: '#e91e63', color: 'white', padding: '6px 12px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: '600', cursor: 'pointer'}}>Cart (2)</span>
+              <span className="cart" style={{background: '#e91e63', color: 'white', padding: '6px 12px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: '600', cursor: 'pointer'}}>Cart (2)</span>
             </li>
             <li style={{display: 'flex', gap: '15px', alignItems: 'center'}}>
               <a href="https://www.instagram.com/by.langelihle/" target="_blank" rel="noopener noreferrer" style={{color: '#333', textDecoration: 'none', transition: 'color 0.2s ease'}} onMouseOver={(e) => e.target.style.color = '#e91e63'} onMouseOut={(e) => e.target.style.color = '#333'}>

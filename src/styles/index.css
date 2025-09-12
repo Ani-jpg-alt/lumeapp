@@ -31,8 +31,18 @@ body {
 
 .nav {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.nav .logo {
+  margin-right: auto;
+}
+
+.nav .cart {
+  margin-left: auto;
 }
 
 .logo {
@@ -50,6 +60,8 @@ body {
   display: flex;
   list-style: none;
   gap: 2rem;
+  flex: 1;
+  justify-content: center;
 }
 
 .nav-links a {
