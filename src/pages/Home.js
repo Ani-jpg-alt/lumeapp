@@ -17,44 +17,48 @@ function Home() {
   return (
     <div>
       {/* Delivery Banner */}
-      <div style={{background: '#e91e63', color: 'white', padding: '8px 0', textAlign: 'center', fontSize: '0.9rem'}}>
+      <div style={{background: 'linear-gradient(135deg, #e91e63, #f8e8ff)', color: 'white', padding: '10px 0', textAlign: 'center', fontSize: '0.9rem', boxShadow: '0 2px 10px rgba(233, 30, 99, 0.2)'}}>
         <div className="container">
-          📦 Delivery in 5-7 days via PEP & The Courier Guy - Parcel Lockers
+          ✨ Delivery in 5-7 days via PEP & The Courier Guy - Parcel Lockers 👑
         </div>
       </div>
 
       {/* Hero Section */}
       <section className="hero" style={{
-        background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,232,255,0.8)), url("https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&h=600&fit=crop&auto=format&q=80")',
+        background: 'linear-gradient(135deg, rgba(248,232,255,0.95), rgba(212,187,255,0.9)), url("https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&h=600&fit=crop&auto=format&q=80")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '6rem 0'
       }}>
         <div className="container">
-          <h1 style={{fontSize: '3.5rem', color: '#333', textShadow: '2px 2px 4px rgba(255,255,255,0.8)'}}>Summer Vibes Only! ☀️</h1>
-          <p style={{fontSize: '1.3rem', color: '#555', marginBottom: '2rem'}}>Slay this season with dresses that scream main character energy ✨</p>
+          <h1 style={{fontSize: '3.5rem', color: '#333', textShadow: '2px 2px 4px rgba(255,255,255,0.8)'}}>✨ Summer Princess Vibes ✨</h1>
+          <p style={{fontSize: '1.3rem', color: '#555', marginBottom: '2rem'}}>Slay this season with dresses that scream main character energy 👑</p>
           <div style={{display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap'}}>
-            <Link to="/shop" className="btn" style={{fontSize: '1rem', padding: '15px 30px'}}>Shop Summer Fits</Link>
-            <Link to="/about" className="btn" style={{background: 'transparent', color: '#e91e63', border: '2px solid #e91e63', fontSize: '1rem', padding: '15px 30px'}}>Our Story</Link>
+            <Link to="/shop" className="btn" style={{fontSize: '1rem', padding: '15px 30px', boxShadow: '0 8px 20px rgba(233, 30, 99, 0.3)'}}>Shop Summer Fits 💖</Link>
+            <Link to="/about" className="btn" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,232,255,0.8))', color: '#e91e63', border: '2px solid #e91e63', fontSize: '1rem', padding: '15px 30px', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.2)'}}>Our Story ✨</Link>
           </div>
         </div>
       </section>
 
       {/* Categories */}
-      <section className="section">
+      <section className="section" style={{background: 'linear-gradient(135deg, #f8f9fa, #f0f8ff)', padding: '4rem 0'}}>
         <div className="container">
-          <h2>Categories</h2>
+          <h2 style={{textAlign: 'center', marginBottom: '3rem', color: '#e91e63'}}>✨ Shop by Category ✨</h2>
           <div className="categories">
-            {categories.map((category, index) => (
-              <Link key={index} to="/shop" className="category-card">
-                <div className="category-image">
-                  <img src={category.image} alt={category.name} />
-                </div>
-                <div className="category-info">
-                  <h3>{category.name}</h3>
-                </div>
-              </Link>
-            ))}
+            {categories.map((category, index) => {
+              const emojis = ['👗', '👑', '💪'];
+              return (
+                <Link key={index} to="/shop" className="category-card" style={{background: 'linear-gradient(135deg, #fff, #f8e8ff)', border: '2px solid transparent', backgroundClip: 'padding-box'}}>
+                  <div className="category-image">
+                    <img src={category.image} alt={category.name} />
+                    <div style={{position: 'absolute', top: '10px', right: '10px', fontSize: '2rem'}}>{emojis[index]}</div>
+                  </div>
+                  <div className="category-info">
+                    <h3 style={{color: '#e91e63'}}>{category.name}</h3>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -62,49 +66,57 @@ function Home() {
       {/* Featured Products */}
       <section className="section">
         <div className="container">
-          <h2>New Arrivals</h2>
+          <h2 style={{textAlign: 'center', marginBottom: '3rem', color: '#e91e63'}}>👑 New Arrivals 👑</h2>
           <div className="product-grid">
-            {products.map(product => (
-              <div key={product.id} className="product-card">
-                <div className="product-image">
-                  <img src={product.image} alt={product.name} />
+            {products.map((product, index) => {
+              const productEmojis = ['👗', '🌸', '💖'];
+              return (
+                <div key={product.id} className="product-card" style={{background: 'linear-gradient(135deg, #fff, #f8e8ff)', border: '1px solid rgba(233, 30, 99, 0.1)'}}>
+                  <div className="product-image">
+                    <img src={product.image} alt={product.name} />
+                    <div style={{position: 'absolute', top: '10px', left: '10px', fontSize: '1.5rem'}}>{productEmojis[index]}</div>
+                  </div>
+                  <div className="product-info">
+                    <h3 style={{color: '#e91e63'}}>{product.name}</h3>
+                    <p className="price" style={{fontSize: '1.2rem', fontWeight: '700'}}>{product.price}</p>
+                    {product.description && (
+                      <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>{product.description}</p>
+                    )}
+                    {product.colors && (
+                      <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>Colors: {product.colors.join(', ')}</p>
+                    )}
+                    {product.sizes && (
+                      <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>Sizes: {product.sizes.join(', ')}</p>
+                    )}
+                    <button className="btn" style={{width: '100%', fontSize: '0.8rem', background: 'linear-gradient(135deg, #e91e63, #f8e8ff)', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)'}}>
+                      Add to Cart ✨
+                    </button>
+                  </div>
                 </div>
-                <div className="product-info">
-                  <h3>{product.name}</h3>
-                  <p className="price">{product.price}</p>
-                  {product.description && (
-                    <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>{product.description}</p>
-                  )}
-                  {product.colors && (
-                    <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>Colors: {product.colors.join(', ')}</p>
-                  )}
-                  {product.sizes && (
-                    <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>Sizes: {product.sizes.join(', ')}</p>
-                  )}
-                  <button className="btn" style={{width: '100%', fontSize: '0.8rem'}}>
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Delivery Info */}
-      <section className="section" style={{background: '#f8f9fa', padding: '2rem 0'}}>
+      <section className="section" style={{background: 'linear-gradient(135deg, #f8e8ff, #e8d5ff)', padding: '3rem 0'}}>
         <div className="container">
+          <h2 style={{textAlign: 'center', marginBottom: '2rem', color: '#e91e63'}}>✨ Princess Treatment ✨</h2>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'center'}}>
-            <div>
-              <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Fast Delivery</h3>
+            <div style={{background: 'rgba(255,255,255,0.7)', padding: '2rem', borderRadius: '15px', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.1)'}}>
+              <div style={{fontSize: '2.5rem', marginBottom: '1rem'}}>🚚</div>
+              <h3 style={{marginBottom: '0.5rem', color: '#e91e63'}}>Fast Delivery</h3>
               <p style={{color: '#666', fontSize: '0.9rem'}}>5-7 days via PEP & The Courier Guy</p>
             </div>
-            <div>
-              <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Secure Payment</h3>
+            <div style={{background: 'rgba(255,255,255,0.7)', padding: '2rem', borderRadius: '15px', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.1)'}}>
+              <div style={{fontSize: '2.5rem', marginBottom: '1rem'}}>🔒</div>
+              <h3 style={{marginBottom: '0.5rem', color: '#e91e63'}}>Secure Payment</h3>
               <p style={{color: '#666', fontSize: '0.9rem'}}>Safe & trusted checkout</p>
             </div>
-            <div>
-              <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Size Exchanges</h3>
+            <div style={{background: 'rgba(255,255,255,0.7)', padding: '2rem', borderRadius: '15px', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.1)'}}>
+              <div style={{fontSize: '2.5rem', marginBottom: '1rem'}}>💝</div>
+              <h3 style={{marginBottom: '0.5rem', color: '#e91e63'}}>Size Exchanges</h3>
               <p style={{color: '#666', fontSize: '0.9rem'}}>7-day size exchange policy</p>
             </div>
           </div>

@@ -6,97 +6,76 @@ function Privacy() {
       <div className="container">
         <h1>Privacy Policy</h1>
         
-        <div style={{maxWidth: '800px', margin: '0 auto'}}>
-          <p style={{fontSize: '0.9rem', color: '#999', marginBottom: '2rem'}}>
-            Last updated: January 1, 2024
+        <div style={{maxWidth: '700px', margin: '0 auto'}}>
+          <p style={{fontSize: '0.9rem', color: '#666', marginBottom: '2rem'}}>
+            Effective Date: January 1, 2024
           </p>
 
-          <section style={{marginBottom: '3rem'}}>
-            <h2>Information We Collect</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We collect information you provide directly to us, such as when you create an account, 
-              make a purchase, or contact us for support. This may include:
+          <div style={{background: '#f8e8ff', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem'}}>
+            <p style={{fontSize: '0.9rem', margin: 0, fontWeight: '500'}}>
+              At Lume by Lee, we respect your privacy and are committed to protecting your personal information in accordance with the Protection of Personal Information Act (POPIA).
             </p>
-            <ul style={{fontSize: '1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>Name and contact information</li>
-              <li>Billing and shipping addresses</li>
-              <li>Payment information</li>
+          </div>
+
+          <section style={{marginBottom: '2rem'}}>
+            <h3>What Information Do We Collect?</h3>
+            <p style={{fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1rem'}}>
+              When you shop with us, we collect:
+            </p>
+            <ul style={{fontSize: '0.9rem', lineHeight: '1.6', paddingLeft: '1.5rem'}}>
+              <li>Personal details (name, email, phone number)</li>
+              <li>Delivery and billing addresses</li>
+              <li>Payment information (processed securely)</li>
               <li>Order history and preferences</li>
-              <li>Communications with customer service</li>
+              <li>Website usage data through cookies</li>
             </ul>
           </section>
 
-          <section style={{marginBottom: '3rem'}}>
-            <h2>How We Use Your Information</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We use the information we collect to:
-            </p>
-            <ul style={{fontSize: '1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>Process and fulfill your orders</li>
-              <li>Communicate with you about your orders</li>
-              <li>Provide customer support</li>
-              <li>Send you marketing communications (with your consent)</li>
-              <li>Improve our products and services</li>
-              <li>Comply with legal obligations</li>
-            </ul>
-          </section>
-
-          <section style={{marginBottom: '3rem'}}>
-            <h2>Information Sharing</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We do not sell, trade, or otherwise transfer your personal information to third parties 
-              except as described in this policy. We may share your information with:
-            </p>
-            <ul style={{fontSize: '1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>Service providers who assist with our operations</li>
-              <li>Payment processors for transaction processing</li>
-              <li>Shipping companies for order fulfillment</li>
-              <li>Legal authorities when required by law</li>
-            </ul>
-          </section>
-
-          <section style={{marginBottom: '3rem'}}>
-            <h2>Data Security</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We implement appropriate security measures to protect your personal information against 
-              unauthorized access, alteration, disclosure, or destruction. However, no method of 
-              transmission over the internet is 100% secure.
+          <section style={{marginBottom: '2rem'}}>
+            <h3>How Do We Use Your Information?</h3>
+            <p style={{fontSize: '0.9rem', lineHeight: '1.6'}}>
+              We use your information to process orders, arrange delivery, provide customer service, improve our website, and send you promotional offers (only if you've opted in). We may also use it for fraud prevention and legal compliance.
             </p>
           </section>
 
-          <section style={{marginBottom: '3rem'}}>
-            <h2>Your Rights</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
+          <section style={{marginBottom: '2rem'}}>
+            <h3>Who Do We Share Your Information With?</h3>
+            <p style={{fontSize: '0.9rem', lineHeight: '1.6'}}>
+              We only share your information with trusted service providers including delivery partners (PEP, The Courier Guy), payment processors, and IT service providers. We never sell your personal information to third parties.
+            </p>
+          </section>
+
+          <section style={{marginBottom: '2rem'}}>
+            <h3>Your Rights Under POPIA</h3>
+            <p style={{fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '1rem'}}>
               You have the right to:
             </p>
-            <ul style={{fontSize: '1rem', lineHeight: '1.8', paddingLeft: '2rem'}}>
-              <li>Access and update your personal information</li>
-              <li>Request deletion of your personal information</li>
-              <li>Opt out of marketing communications</li>
-              <li>Request a copy of your personal information</li>
+            <ul style={{fontSize: '0.9rem', lineHeight: '1.6', paddingLeft: '1.5rem'}}>
+              <li>Access your personal information</li>
+              <li>Correct or update your details</li>
+              <li>Delete your information (subject to legal requirements)</li>
+              <li>Object to processing for marketing purposes</li>
+              <li>Lodge a complaint with the Information Regulator</li>
             </ul>
           </section>
 
-          <section style={{marginBottom: '3rem'}}>
-            <h2>Cookies</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We use cookies and similar technologies to enhance your browsing experience, 
-              analyze site traffic, and personalize content. You can control cookie settings 
-              through your browser preferences.
+          <section style={{marginBottom: '2rem'}}>
+            <h3>Data Security & Retention</h3>
+            <p style={{fontSize: '0.9rem', lineHeight: '1.6'}}>
+              We implement appropriate technical and organizational measures to protect your information. Your data is stored securely in South Africa and retained only as long as necessary for business and legal purposes.
             </p>
           </section>
 
-          <section style={{marginBottom: '3rem'}}>
-            <h2>Changes to This Policy</h2>
-            <p style={{fontSize: '1rem', lineHeight: '1.8', marginBottom: '1rem'}}>
-              We may update this privacy policy from time to time. We will notify you of any 
-              changes by posting the new policy on this page and updating the "last updated" date.
+          <section style={{marginBottom: '2rem'}}>
+            <h3>Cookies & Website Analytics</h3>
+            <p style={{fontSize: '0.9rem', lineHeight: '1.6'}}>
+              Our website uses cookies to enhance your shopping experience and analyze website performance. You can manage cookie preferences through your browser settings.
             </p>
           </section>
 
-          <div style={{textAlign: 'center', padding: '2rem', background: '#F5F5DC', borderRadius: '10px'}}>
-            <h3>Privacy Questions?</h3>
-            <p>Contact us at privacy@nudes.com or hello@nudes.com</p>
+          <div style={{background: '#e91e63', color: 'white', padding: '1.5rem', borderRadius: '8px', textAlign: 'center'}}>
+            <h4 style={{margin: '0 0 0.5rem 0'}}>Contact Our Privacy Officer</h4>
+            <p style={{margin: 0, fontSize: '0.9rem'}}>Email: privacy@lumebylee.co.za | Phone: Available on request</p>
           </div>
         </div>
       </div>
