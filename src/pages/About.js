@@ -12,7 +12,7 @@ function About() {
         textAlign: 'center'
       }}>
         <div className="container">
-          <h1 style={{fontSize: '3.5rem', color: '#333', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', marginBottom: '1rem'}}>✨ A Dream Reignited ✨</h1>
+          <h1 style={{fontSize: '3.5rem', color: '#333', textShadow: '2px 2px 4px rgba(255,255,255,0.8)', marginBottom: '1rem'}}>A Dream Reignited</h1>
           <p style={{fontSize: '1.3rem', color: '#555', maxWidth: '600px', margin: '0 auto'}}>Meet the woman behind Lume by Lee</p>
         </div>
       </section>
@@ -36,7 +36,7 @@ function About() {
                   color: 'white',
                   boxShadow: '0 10px 30px rgba(233, 30, 99, 0.3)'
                 }}>
-                  👑
+                  L
                 </div>
               </div>
               <div>
@@ -48,7 +48,7 @@ function About() {
             {/* Story Cards */}
             <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '3rem'}}>
               <div style={{background: 'linear-gradient(135deg, #f8e8ff, #e8d5ff)', padding: '2rem', borderRadius: '15px', textAlign: 'center'}}>
-                <div style={{fontSize: '3rem', marginBottom: '1rem'}}>💫</div>
+
                 <h3 style={{color: '#e91e63', marginBottom: '1rem'}}>The Dream</h3>
                 <p style={{fontSize: '0.9rem', lineHeight: '1.6', color: '#555'}}>
                   Always dreamed of working with iconic fashion brands that celebrate and empower women through bold, stylish pieces.
@@ -56,7 +56,7 @@ function About() {
               </div>
               
               <div style={{background: 'linear-gradient(135deg, #fff0f5, #f8e8ff)', padding: '2rem', borderRadius: '15px', textAlign: 'center'}}>
-                <div style={{fontSize: '3rem', marginBottom: '1rem'}}>🔥</div>
+
                 <h3 style={{color: '#e91e63', marginBottom: '1rem'}}>The Passion</h3>
                 <p style={{fontSize: '0.9rem', lineHeight: '1.6', color: '#555'}}>
                   Life happened and I lost touch with fashion. But dreams have a beautiful way of calling us back, louder and stronger.
@@ -64,7 +64,7 @@ function About() {
               </div>
               
               <div style={{background: 'linear-gradient(135deg, #f0f8ff, #e8f4ff)', padding: '2rem', borderRadius: '15px', textAlign: 'center'}}>
-                <div style={{fontSize: '3rem', marginBottom: '1rem'}}>✨</div>
+
                 <h3 style={{color: '#e91e63', marginBottom: '1rem'}}>The Purpose</h3>
                 <p style={{fontSize: '0.9rem', lineHeight: '1.6', color: '#555'}}>
                   Turning passion into purpose with Lume by Lee - confidence, energy, and glow for the modern woman.
@@ -88,12 +88,12 @@ function About() {
                 </p>
                 
                 <p style={{marginBottom: '2rem'}}>
-                  Thank you for being part of this journey. Here's to rediscovering dreams, showing up boldly, and looking absolutely stunning while doing it. 💖
+                  Thank you for being part of this journey. Here's to rediscovering dreams, showing up boldly, and looking absolutely stunning while doing it.
                 </p>
                 
                 <div style={{textAlign: 'center', padding: '2rem', background: 'rgba(255,255,255,0.5)', borderRadius: '15px'}}>
                   <p style={{fontSize: '1.1rem', fontWeight: '600', color: '#e91e63', marginBottom: '0.5rem'}}>With love & light,</p>
-                  <p style={{fontSize: '1.3rem', fontWeight: '700', color: '#333'}}>Langelihle Mpanza ✨</p>
+                  <p style={{fontSize: '1.3rem', fontWeight: '700', color: '#333'}}>Langelihle Mpanza</p>
                   <p style={{fontSize: '0.9rem', color: '#666'}}>Founder, Lume by Lee</p>
                 </div>
               </div>
@@ -101,7 +101,7 @@ function About() {
 
             {/* Call to Action */}
             <div style={{textAlign: 'center', padding: '2rem'}}>
-              <h3 style={{marginBottom: '1rem', color: '#e91e63'}}>Ready to Glow? ✨</h3>
+              <h3 style={{marginBottom: '1rem', color: '#e91e63'}}>Ready to Glow?</h3>
               <a href="/shop" className="btn" style={{fontSize: '1.1rem', padding: '15px 30px'}}>Shop the Collection</a>
             </div>
           </div>

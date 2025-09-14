@@ -1,8 +1,6 @@
 import React from 'react';
 
 const FilterButtons = ({ categories, activeFilter, onFilterChange }) => {
-  const categoryEmojis = {all: '✨', dresses: '👗', accessories: '👑', 'gym-sets': '💪'};
-  
   return (
     <div className="filter-buttons" style={{marginBottom: '3rem'}}>
       {categories.map(category => (
@@ -18,7 +16,7 @@ const FilterButtons = ({ categories, activeFilter, onFilterChange }) => {
             boxShadow: activeFilter === category.id ? '0 4px 15px rgba(233, 30, 99, 0.3)' : '0 2px 8px rgba(233, 30, 99, 0.1)'
           }}
         >
-          {categoryEmojis[category.id]} {category.name}
+          {category.name}
         </button>
       ))}
     </div>

@@ -20,8 +20,8 @@ function Shop() {
         textAlign: 'center'
       }}>
         <div className="container">
-          <h1 style={{fontSize: '3rem', color: '#333', textShadow: '2px 2px 4px rgba(255,255,255,0.8)'}}>✨ Princess Collection ✨</h1>
-          <p style={{fontSize: '1.2rem', color: '#555'}}>Curated pieces for the modern queen 👑</p>
+          <h1 style={{fontSize: '3rem', color: '#333', textShadow: '2px 2px 4px rgba(255,255,255,0.8)'}}>Princess Collection</h1>
+          <p style={{fontSize: '1.2rem', color: '#555'}}>Curated pieces for the modern queen</p>
         </div>
       </section>
 
@@ -45,7 +45,7 @@ function Shop() {
           
           {filteredProducts.length > 8 && (
             <div style={{textAlign: 'center', marginTop: '2rem'}}>
-              <button className="btn" style={{padding: '12px 30px', background: 'linear-gradient(135deg, #e91e63, #f8e8ff)', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)'}}>Load More ✨</button>
+              <button className="btn" style={{padding: '12px 30px', background: 'linear-gradient(135deg, #e91e63, #f8e8ff)', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)'}}>Load More</button>
             </div>
           )}
         </div>
