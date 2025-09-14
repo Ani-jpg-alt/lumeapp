@@ -19,7 +19,7 @@ function Home() {
       {/* Delivery Banner */}
       <div style={{background: '#e91e63', color: 'white', padding: '8px 0', textAlign: 'center', fontSize: '0.9rem'}}>
         <div className="container">
-          📦 Delivery in 7 days via PEP & The Courier Guy
+          📦 Delivery in 5-7 days via PEP & The Courier Guy - Parcel Lockers
         </div>
       </div>
 
@@ -97,15 +97,15 @@ function Home() {
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', textAlign: 'center'}}>
             <div>
               <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Fast Delivery</h3>
-              <p style={{color: '#666', fontSize: '0.9rem'}}>7 days via PEP & The Courier Guy</p>
+              <p style={{color: '#666', fontSize: '0.9rem'}}>5-7 days via PEP & The Courier Guy</p>
             </div>
             <div>
               <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Secure Payment</h3>
               <p style={{color: '#666', fontSize: '0.9rem'}}>Safe & trusted checkout</p>
             </div>
             <div>
-              <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Easy Exchanges</h3>
-              <p style={{color: '#666', fontSize: '0.9rem'}}>30-day exchange policy</p>
+              <h3 style={{marginBottom: '0.5rem', color: '#333'}}>Size Exchanges</h3>
+              <p style={{color: '#666', fontSize: '0.9rem'}}>7-day size exchange policy</p>
             </div>
           </div>
         </div>
