@@ -33,15 +33,28 @@ function Shop() {
             onFilterChange={setFilter}
           />
 
-          <div className="product-grid">
-            {filteredProducts.slice(0, 8).map((product, index) => (
-              <ProductCard 
-                key={product.id} 
-                product={product} 
-                index={index}
-              />
-            ))}
-          </div>
+          {filteredProducts.length > 0 ? (
+            <div className="product-grid">
+              {filteredProducts.slice(0, 8).map((product, index) => (
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  index={index}
+                />
+              ))}
+            </div>
+          ) : (
+            <div style={{
+              textAlign: 'center',
+              padding: '4rem 2rem',
+              background: 'linear-gradient(135deg, #f8e8ff, #e8d5ff)',
+              borderRadius: '20px',
+              margin: '2rem 0'
+            }}>
+              <h3 style={{color: '#e91e63', fontSize: '2rem', marginBottom: '1rem'}}>New Stock Arriving Soon</h3>
+              <p style={{color: '#666', fontSize: '1.1rem'}}>We're curating amazing pieces for this category. Check back soon!</p>
+            </div>
+          )}
           
           {filteredProducts.length > 8 && (
             <div style={{textAlign: 'center', marginTop: '2rem'}}>

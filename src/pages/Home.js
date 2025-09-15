@@ -1,21 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from '../hooks/useCart';
+import HomeProductCard from '../components/HomeProductCard';
 
 function Home() {
-  const { addToCart } = useCart();
+  const addToCart = (product) => {
+    alert(`${product.name} added to cart!`);
+  };
   
   const products = [
-    { id: 1, name: 'Jean Dress', price: 'R300', image: '/jean-dress.jpg', images: ['/jean-dress.jpg', '/jean-dress-2.jpg'], description: 'Every girl NEEDS a Jean short dress this summer!!!', sizes: ['S', 'M', 'L', 'XL', 'XXL'] },
-    { id: 2, name: 'Polka Dot Dress', price: 'R250', image: '/polka-dot-dress.jpg', images: ['/polka-dot-dress.jpg', '/polka-dot-dress-2.jpg'], description: 'We are stepping into summer with polka dots!', sizes: ['M', 'L', 'XL', 'XXL'] },
-    { id: 3, name: 'Two Piece', price: 'R350', image: '/two-piece.jpg', images: ['/two-piece.jpg', '/two-piece-2.jpg', '/two-piece-3.jpg'], description: 'Every girl deserves a playful two piece this summer.', colors: ['Pink', 'Blue', 'Green'], sizes: ['S', 'M', 'L', 'XL', 'XXL'] }
+    { id: 1, name: 'Jean Dress', price: 'R300', image: '/jean-dress.JPG', images: ['/jean-dress.JPG', '/jean-dress-2.JPG', '/jean-dress-3.JPG'], description: 'Every girl NEEDS a Jean short dress this summer!!!', sizes: ['S', 'M', 'L', 'XL', 'XXL'] },
+    { id: 2, name: 'Polka Dot Dress', price: 'R250', image: '/polka-dot-dress.JPG', images: ['/polka-dot-dress.JPG', '/polka-dot-dress-2.JPG', '/polka-dot-dress-3.JPG'], description: 'We are stepping into summer with polka dots!', sizes: ['M', 'L', 'XL', 'XXL'] },
+    { id: 3, name: 'Two Piece', price: 'R350', image: '/two-piece.JPG', images: ['/two-piece.JPG', '/two-piece-2.JPG', '/two-piece-3.JPG'], description: 'Every girl deserves a playful two piece this summer.', colors: ['Pink', 'Blue', 'Green'], sizes: ['S', 'M', 'L', 'XL', 'XXL'] }
   ];
 
-  const categories = [
-    { name: 'Dresses', image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=300&h=200&fit=crop&auto=format&q=80' },
-    { name: 'Accessories', image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&h=200&fit=crop&auto=format&q=80' },
-    { name: 'Gym Sets', image: 'https://images.unsplash.com/photo-1506629905607-d405b7a30db9?w=300&h=200&fit=crop&auto=format&q=80' }
-  ];
+
 
   return (
     <div>
@@ -43,56 +41,19 @@ function Home() {
         </div>
       </section>
 
-      {/* Categories */}
-      <section className="section" style={{background: 'linear-gradient(135deg, #f8f9fa, #f0f8ff)', padding: '4rem 0'}}>
-        <div className="container">
-          <h2 style={{textAlign: 'center', marginBottom: '3rem', color: '#e91e63'}}>Shop by Category</h2>
-          <div className="categories">
-            {categories.map((category, index) => (
-              <Link key={index} to="/shop" className="category-card" style={{background: 'linear-gradient(135deg, #fff, #f8e8ff)', border: '2px solid transparent', backgroundClip: 'padding-box'}}>
-                <div className="category-image">
-                  <img src={category.image} alt={category.name} />
-                </div>
-                <div className="category-info">
-                  <h3 style={{color: '#e91e63'}}>{category.name}</h3>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Featured Products */}
       <section className="section">
         <div className="container">
           <h2 style={{textAlign: 'center', marginBottom: '3rem', color: '#e91e63'}}>New Arrivals</h2>
           <div className="product-grid">
-            {products.map((product, index) => (
-              <div key={product.id} className="product-card" style={{background: 'linear-gradient(135deg, #fff, #f8e8ff)', border: '1px solid rgba(233, 30, 99, 0.1)'}}>
-                <div className="product-image">
-                  <img src={product.image} alt={product.name} />
-                </div>
-                <div className="product-info">
-                  <h3 style={{color: '#e91e63'}}>{product.name}</h3>
-                  <p className="price" style={{fontSize: '1.2rem', fontWeight: '700'}}>{product.price}</p>
-                  {product.description && (
-                    <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>{product.description}</p>
-                  )}
-                  {product.colors && (
-                    <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>Colors: {product.colors.join(', ')}</p>
-                  )}
-                  {product.sizes && (
-                    <p style={{fontSize: '0.8rem', color: '#666', marginBottom: '0.5rem'}}>Sizes: {product.sizes.join(', ')}</p>
-                  )}
-                  <button 
-                    className="btn" 
-                    style={{width: '100%', fontSize: '0.8rem', background: 'linear-gradient(135deg, #e91e63, #f8e8ff)', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)'}}
-                    onClick={() => addToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
+            {products.map((product) => (
+              <HomeProductCard 
+                key={product.id} 
+                product={product} 
+                addToCart={addToCart}
+              />
             ))}
           </div>
         </div>
