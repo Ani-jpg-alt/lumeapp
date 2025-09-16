@@ -1,17 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import HomeProductCard from '../components/HomeProductCard';
+import { products } from '../data/products';
 
 function Home() {
   const addToCart = (product) => {
     alert(`${product.name} added to cart!`);
   };
-  
-  const products = [
-    { id: 1, name: 'Jean Dress', price: 'R300', image: '/jean-dress.JPG', images: ['/jean-dress.JPG', '/jean-dress-2.JPG', '/jean-dress-3.JPG'], description: 'Every girl NEEDS a Jean short dress this summer!!!', sizes: ['S', 'M', 'L', 'XL', 'XXL'] },
-    { id: 2, name: 'Polka Dot Dress', price: 'R250', image: '/polka-dot-dress.JPG', images: ['/polka-dot-dress.JPG', '/polka-dot-dress-2.JPG', '/polka-dot-dress-3.JPG'], description: 'We are stepping into summer with polka dots!', sizes: ['M', 'L', 'XL', 'XXL'] },
-    { id: 3, name: 'Two Piece', price: 'R350', image: '/two-piece.JPG', images: ['/two-piece.JPG', '/two-piece-2.JPG', '/two-piece-3.JPG'], description: 'Every girl deserves a playful two piece this summer.', colors: ['Pink', 'Blue', 'Green'], sizes: ['S', 'M', 'L', 'XL', 'XXL'] }
-  ];
 
 
 

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { products, categories } from '../data/products';
+import { categories, products } from '../data/products';
 import ProductCard from '../components/ProductCard';
 import FilterButtons from '../components/FilterButtons';
 import '../styles/shop.css';
 
 function Shop() {
   const [filter, setFilter] = useState('all');
-  
+
   const filteredProducts = filter === 'all' ? products : products.filter(product => product.category === filter);
 
   return (
@@ -35,10 +35,10 @@ function Shop() {
 
           {filteredProducts.length > 0 ? (
             <div className="product-grid">
-              {filteredProducts.slice(0, 8).map((product, index) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
+              {filteredProducts.map((product, index) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
                   index={index}
                 />
               ))}

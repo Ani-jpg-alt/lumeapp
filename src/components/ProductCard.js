@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { useCart } from '../hooks/useCart';
+import { useCart } from '../contexts/CartContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const ProductCard = ({ product, index }) => {
-  const { addToCart } = useCart();
+  const { addToCart, getItemQuantity } = useCart();
+  const { currentUser } = useAuth();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [, setSelectedSize] = useState(null);
+  const [showSizeSelector, setShowSizeSelector] = useState(false);
   
   const images = product.images || [product.image];
   
@@ -23,7 +27,32 @@ const ProductCard = ({ product, index }) => {
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
-    addToCart(product);
+    
+    // Security check: Must be authenticated to add to cart
+    if (!currentUser) {
+      // Show authentication required message
+      alert('Please log in to add items to your cart.');
+      window.location.href = '/auth';
+      return;
+    }
+
+    // Additional security: Ensure product exists and has valid data
+    if (!product || !product.id || !product.name || !product.price) {
+      alert('Invalid product. Please try again.');
+      return;
+    }
+
+    if (product.sizes && product.sizes.length > 0) {
+      setShowSizeSelector(true);
+    } else {
+      addToCart(product);
+    }
+  };
+
+  const handleSizeSelect = (size) => {
+    setSelectedSize(size);
+    addToCart(product, size);
+    setShowSizeSelector(false);
   };
 
   return (
@@ -100,17 +129,101 @@ const ProductCard = ({ product, index }) => {
         <p className="social-proof">
           {socialProof[index % 4]}
         </p>
-        <p className="sizes">
-          Sizes: {product.size.join(', ')}
-        </p>
-        <button 
-          className="btn product-btn" 
+        {product.sizes && product.sizes.length > 0 && (
+          <p className="sizes">
+            Sizes: {product.sizes.join(', ')}
+          </p>
+        )}
+        <button
+          className="btn product-btn"
           style={{background: 'linear-gradient(135deg, #e91e63, #f8e8ff)', boxShadow: '0 4px 15px rgba(233, 30, 99, 0.3)'}}
           onClick={handleAddToCart}
         >
-          Make It Mine
+          {currentUser ? (() => {
+            const totalInCart = product.sizes ?
+              product.sizes.reduce((total, size) => total + getItemQuantity(product.id, size), 0) :
+              getItemQuantity(product.id);
+            return totalInCart > 0 ? `${totalInCart} in cart` : 'Add to Cart';
+          })() : 'Login to Buy'}
         </button>
       </div>
+      
+      {showSizeSelector && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000,
+          padding: '2rem'
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '20px',
+            padding: '2rem',
+            maxWidth: '400px',
+            width: '100%',
+            textAlign: 'center'
+          }}>
+            <h3 style={{ color: '#e91e63', marginBottom: '1rem' }}>Select Size</h3>
+            <p style={{ color: '#666', marginBottom: '2rem' }}>Choose a size for {product.name}</p>
+            
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(60px, 1fr))',
+              gap: '1rem',
+              marginBottom: '2rem'
+            }}>
+              {product.sizes.map((size) => (
+                <button
+                  key={size}
+                  onClick={() => handleSizeSelect(size)}
+                  style={{
+                    padding: '1rem',
+                    border: '2px solid #e91e63',
+                    background: 'white',
+                    color: '#e91e63',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
+                    fontSize: '1rem',
+                    fontWeight: 'bold',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = '#e91e63';
+                    e.target.style.color = 'white';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'white';
+                    e.target.style.color = '#e91e63';
+                  }}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+            
+            <button
+              onClick={() => setShowSizeSelector(false)}
+              style={{
+                padding: '0.75rem 2rem',
+                background: 'transparent',
+                color: '#666',
+                border: '2px solid #e0e0e0',
+                borderRadius: '8px',
+                cursor: 'pointer'
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
