@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNotification } from '../contexts/NotificationContext';
 
 function Contact() {
+  const { showNotification } = useNotification();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -18,7 +20,7 @@ function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+    showNotification('Thank you for your message! We\'ll get back to you within 24 hours.', 'success');
     setFormData({ name: '', email: '', subject: '', message: '', captcha: '' });
   };
 

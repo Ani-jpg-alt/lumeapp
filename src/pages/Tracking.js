@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNotification } from '../contexts/NotificationContext';
 
 function Tracking() {
+  const { showNotification } = useNotification();
   const [trackingData, setTrackingData] = useState({
     orderNumber: '',
     email: ''
@@ -15,7 +17,7 @@ function Tracking() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert('Tracking information would be displayed here. This is a demo.');
+    showNotification('Tracking information would be displayed here. This is a demo.', 'info');
   };
 
   return (

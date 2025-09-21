@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 const ProductCard = ({ product, index }) => {
   const { addToCart, getItemQuantity } = useCart();
   const { currentUser } = useAuth();
+  const { showNotification } = useNotification();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [, setSelectedSize] = useState(null);
   const [showSizeSelector, setShowSizeSelector] = useState(false);
@@ -31,14 +33,16 @@ const ProductCard = ({ product, index }) => {
     // Security check: Must be authenticated to add to cart
     if (!currentUser) {
       // Show authentication required message
-      alert('Please log in to add items to your cart.');
-      window.location.href = '/auth';
+      showNotification('Please log in to add items to your cart.', 'warning');
+      setTimeout(() => {
+        window.location.href = '/auth';
+      }, 1500);
       return;
     }
 
     // Additional security: Ensure product exists and has valid data
     if (!product || !product.id || !product.name || !product.price) {
-      alert('Invalid product. Please try again.');
+      showNotification('Invalid product. Please try again.', 'error');
       return;
     }
 

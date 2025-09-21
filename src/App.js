@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
+import { NotificationProvider } from './contexts/NotificationContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -25,8 +26,9 @@ import Orders from './pages/Orders';
 function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <Router>
+      <NotificationProvider>
+        <CartProvider>
+          <Router>
           <div className="App">
             <Header />
             <main>
@@ -67,8 +69,9 @@ function App() {
             </main>
             <Footer />
           </div>
-        </Router>
-      </CartProvider>
+          </Router>
+        </CartProvider>
+      </NotificationProvider>
     </AuthProvider>
   );
 }

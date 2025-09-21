@@ -2,10 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import HomeProductCard from '../components/HomeProductCard';
 import { products } from '../data/products';
+import { useNotification } from '../contexts/NotificationContext';
 
 function Home() {
+  const { showNotification } = useNotification();
+
   const addToCart = (product) => {
-    alert(`${product.name} added to cart!`);
+    showNotification(`${product.name} added to cart!`, 'success');
   };
 
 

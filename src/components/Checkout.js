@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { createOrder } from '../services/firestoreService';
+import { useYocoPopup, createYocoPayment, createYocoPaymentIntent, YOCO_TEST_CARDS } from '../services/yocoService';
+import { useNotification } from '../contexts/NotificationContext';
 
 export default function Checkout({ product, cartItems, onClose, onSuccess }) {
   const { currentUser } = useAuth();
+  const [orderId, setOrderId] = useState(null);
+  const { showPopup, isYocoReady } = useYocoPopup();
+  const { showNotification } = useNotification();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -145,7 +150,7 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
     }
 
       // Create order in Firestore
-      const orderId = await createOrder({
+      const newOrderId = await createOrder({
         userId: currentUser.uid,
         items: items.map(item => ({
           productId: item.id,
@@ -166,11 +171,13 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
         }
       });
 
+      setOrderId(newOrderId);
+
       // Redirect to payment gateway
       if (formData.gateway === 'payfast') {
-        redirectToPayFast(orderId, items, formData, totalAmount);
+        redirectToPayFast(newOrderId, items, formData, totalAmount);
       } else if (formData.gateway === 'yoco') {
-        redirectToYoco(orderId, items, formData, totalAmount);
+        redirectToYoco(newOrderId, items, formData, totalAmount);
       }
 
     } catch (error) {
@@ -210,29 +217,38 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
     window.location.href = `https://sandbox.payfast.co.za/eng/process?${queryString}`;
   };
 
-  const redirectToYoco = (orderId, items, deliveryDetails, totalAmount) => {
-    // Yoco sandbox integration
-    // Note: This is a simplified example. In production, you'd use the Yoco SDK
-    const yocoConfig = {
-      publicKey: 'pk_test_ed3c54a6gOol69qa7f45', // Sandbox public key
-      amountInCents: totalAmount * 100,
-      currency: 'ZAR',
-      orderId: orderId,
-      customerDetails: {
-        name: deliveryDetails.name,
-        email: deliveryDetails.email,
-        phone: deliveryDetails.phone
-      }
-    };
+  const redirectToYoco = async (orderId, items, deliveryDetails, totalAmount) => {
+    try {
+      showNotification('Creating Yoco payment...', 'info');
+      setError('Creating payment...');
 
-    // For demo purposes, we'll simulate a successful payment
-    // In production, you'd integrate with Yoco's actual SDK
-    alert(`Yoco Integration Demo:\nOrder ID: ${orderId}\nAmount: R${totalAmount.toFixed(2)}\nItems: ${items.length}\n\nIn production, this would open Yoco's payment modal.`);
-    
-    // Simulate successful payment redirect
-    setTimeout(() => {
-      window.location.href = `/order-success/${orderId}`;
-    }, 2000);
+      // Create payment intent with backend server
+      const paymentIntent = await createYocoPaymentIntent(orderId, items, deliveryDetails, totalAmount);
+
+      if (paymentIntent.redirectUrl) {
+        showNotification('Redirecting to Yoco...', 'info');
+
+        // Close modal before redirecting
+        if (onClose) {
+          onClose();
+        }
+
+        // Small delay to show notification
+        setTimeout(() => {
+          // Redirect to Yoco's hosted payment page
+          console.log('Redirecting to Yoco:', paymentIntent.redirectUrl);
+          window.location.href = paymentIntent.redirectUrl;
+        }, 500);
+      } else {
+        throw new Error('No redirect URL received from payment intent');
+      }
+
+    } catch (error) {
+      console.error('Error initiating Yoco payment:', error);
+      setError('Failed to initiate payment: ' + error.message);
+      showNotification('Failed to create payment. Please try again.', 'error');
+      setLoading(false);
+    }
   };
 
   return (
@@ -488,7 +504,7 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
                 checked={formData.gateway === 'payfast'}
                 onChange={handleInputChange}
               />
-              <span>PayFast</span>
+              <span>PayFast (Sandbox)</span>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <input
@@ -498,9 +514,35 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
                 checked={formData.gateway === 'yoco'}
                 onChange={handleInputChange}
               />
-              <span>Yoco</span>
+              <span>Yoco (Sandbox) {!isYocoReady && '- Loading...'}</span>
             </label>
           </div>
+
+          {formData.gateway === 'yoco' && (
+            <div style={{
+              background: '#e3f2fd',
+              padding: '1rem',
+              borderRadius: '8px',
+              marginBottom: '1rem',
+              border: '1px solid #bbdefb'
+            }}>
+              <h4 style={{ margin: '0 0 0.5rem 0', color: '#1976d2' }}>Yoco Sandbox Simulation</h4>
+              <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', color: '#333' }}>
+                This will simulate a Yoco payment for testing purposes. The payment will be automatically approved in sandbox mode.
+              </p>
+              <div style={{ fontSize: '0.8rem', color: '#555' }}>
+                <div style={{ marginBottom: '0.25rem' }}>
+                  ✅ <strong>Automatic approval</strong> - Payment will be simulated as successful
+                </div>
+                <div style={{ marginBottom: '0.25rem' }}>
+                  🔄 <strong>Processing time</strong> - 2 second simulation delay
+                </div>
+                <div>
+                  📧 <strong>Order confirmation</strong> - You'll be redirected to the success page
+                </div>
+              </div>
+            </div>
+          )}
 
           <button
             type="submit"
@@ -518,7 +560,11 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
               opacity: loading ? 0.7 : 1
             }}
           >
-            {loading ? 'Processing...' : `Pay ${product.price}`}
+            {loading ? 'Processing...' : `Pay R${items.reduce((total, item) => {
+              const price = parseFloat(item.price.replace('R', ''));
+              const quantity = item.quantity || 1;
+              return total + (price * quantity);
+            }, 0).toFixed(2)}`}
           </button>
         </form>
       </div>

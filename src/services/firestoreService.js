@@ -1,13 +1,14 @@
-import { 
-  collection, 
-  doc, 
-  addDoc, 
-  getDocs, 
-  getDoc, 
-  updateDoc, 
-  query, 
-  where, 
-  orderBy 
+import {
+  collection,
+  doc,
+  addDoc,
+  getDocs,
+  getDoc,
+  updateDoc,
+  setDoc,
+  query,
+  where,
+  orderBy
 } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
@@ -92,7 +93,7 @@ export async function updateOrderStatus(orderId, status) {
 export async function getUserOrders(userId) {
   try {
     const q = query(
-      ordersCollection, 
+      ordersCollection,
       where('userId', '==', userId),
       orderBy('createdAt', 'desc')
     );
@@ -103,6 +104,52 @@ export async function getUserOrders(userId) {
     }));
   } catch (error) {
     console.error('Error getting user orders:', error);
+    throw error;
+  }
+}
+
+// Cart collection and functions
+export const cartsCollection = collection(db, 'carts');
+
+export async function saveUserCart(userId, cartItems) {
+  try {
+    const cartDocRef = doc(db, 'carts', userId);
+    await setDoc(cartDocRef, {
+      userId: userId,
+      items: cartItems,
+      updatedAt: new Date()
+    }, { merge: true });
+  } catch (error) {
+    console.error('Error saving user cart:', error);
+    throw error;
+  }
+}
+
+export async function getUserCart(userId) {
+  try {
+    const cartDocRef = doc(db, 'carts', userId);
+    const docSnap = await getDoc(cartDocRef);
+
+    if (docSnap.exists()) {
+      return docSnap.data().items || [];
+    } else {
+      return [];
+    }
+  } catch (error) {
+    console.error('Error getting user cart:', error);
+    return [];
+  }
+}
+
+export async function clearUserCart(userId) {
+  try {
+    const cartDocRef = doc(db, 'carts', userId);
+    await updateDoc(cartDocRef, {
+      items: [],
+      updatedAt: new Date()
+    });
+  } catch (error) {
+    console.error('Error clearing user cart:', error);
     throw error;
   }
 }

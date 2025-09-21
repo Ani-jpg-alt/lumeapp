@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useCart } from '../contexts/CartContext';
 import { useNavigate } from 'react-router-dom';
 import { createOrder } from '../services/firestoreService';
+import { createYocoPaymentIntent, YOCO_TEST_CARDS } from '../services/yocoService';
 
 export default function Checkout() {
   const { currentUser } = useAuth();
@@ -163,13 +164,29 @@ export default function Checkout() {
     window.location.href = `https://sandbox.payfast.co.za/eng/process?${queryString}`;
   };
 
-  const redirectToYoco = (orderId, items, deliveryDetails, totalAmount) => {
-    alert(`Yoco Integration Demo:\nOrder ID: ${orderId}\nAmount: R${totalAmount.toFixed(2)}\nItems: ${items.length}\n\nIn production, this would open Yoco's payment modal.`);
+  const redirectToYoco = async (orderId, items, deliveryDetails, totalAmount) => {
+    try {
+      setError('Creating Yoco payment...');
 
-    setTimeout(() => {
-      clearCart();
-      navigate(`/order-success/${orderId}`);
-    }, 2000);
+      // Create payment intent with backend server
+      const paymentIntent = await createYocoPaymentIntent(orderId, items, deliveryDetails, totalAmount);
+
+      if (paymentIntent.redirectUrl) {
+        // Clear cart before redirecting to payment
+        await clearCart();
+
+        // Redirect to Yoco's hosted payment page
+        console.log('Redirecting to Yoco:', paymentIntent.redirectUrl);
+        window.location.href = paymentIntent.redirectUrl;
+      } else {
+        throw new Error('No redirect URL received from payment intent');
+      }
+
+    } catch (error) {
+      console.error('Error initiating Yoco payment:', error);
+      setError('Failed to initiate payment: ' + error.message);
+      setLoading(false);
+    }
   };
 
   if (!currentUser || !cartItems || cartItems.length === 0) {
@@ -394,7 +411,7 @@ export default function Checkout() {
                       checked={formData.gateway === 'payfast'}
                       onChange={handleInputChange}
                     />
-                    <span>PayFast</span>
+                    <span>PayFast (Sandbox)</span>
                   </label>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <input
@@ -404,9 +421,35 @@ export default function Checkout() {
                       checked={formData.gateway === 'yoco'}
                       onChange={handleInputChange}
                     />
-                    <span>Yoco</span>
+                    <span>Yoco (Sandbox)</span>
                   </label>
                 </div>
+
+                {formData.gateway === 'yoco' && (
+                  <div style={{
+                    background: '#e3f2fd',
+                    padding: '1rem',
+                    borderRadius: '8px',
+                    marginBottom: '1rem',
+                    border: '1px solid #bbdefb'
+                  }}>
+                    <h4 style={{ margin: '0 0 0.5rem 0', color: '#1976d2' }}>Yoco Sandbox Test Cards</h4>
+                    <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.9rem', color: '#333' }}>
+                      Use these test card numbers in the payment modal:
+                    </p>
+                    <div style={{ fontSize: '0.8rem', color: '#555' }}>
+                      <div style={{ marginBottom: '0.25rem' }}>
+                        <strong>Visa:</strong> {YOCO_TEST_CARDS.visa.number} (Success)
+                      </div>
+                      <div style={{ marginBottom: '0.25rem' }}>
+                        <strong>Mastercard:</strong> {YOCO_TEST_CARDS.mastercard.number} (Success)
+                      </div>
+                      <div>
+                        <strong>Declined:</strong> {YOCO_TEST_CARDS.declined.number} (Will be declined)
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <button
                   type="submit"

@@ -15,7 +15,6 @@ export const useCart = () => {
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
-    alert(`${product.name} added to cart!`);
   };
 
   const getCartCount = () => {

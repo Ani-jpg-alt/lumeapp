@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useNotification } from './NotificationContext';
+import { useAuth } from './AuthContext';
+import { saveUserCart, getUserCart, clearUserCart } from '../services/firestoreService';
 
 const CartContext = createContext();
 
@@ -9,24 +12,83 @@ export function useCart() {
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { showNotification } = useNotification();
+  const { currentUser } = useAuth();
 
-  // Load cart from localStorage on component mount
+  // Load cart from Firestore when user changes
   useEffect(() => {
-    const savedCart = localStorage.getItem('lumeapp-cart');
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (error) {
-        console.error('Error loading cart from localStorage:', error);
-        setCartItems([]);
+    const loadUserCart = async () => {
+      if (currentUser) {
+        setIsLoading(true);
+        try {
+          // Get cart from Firestore for authenticated user
+          const userCartItems = await getUserCart(currentUser.uid);
+          setCartItems(userCartItems);
+        } catch (error) {
+          console.error('Error loading cart from Firestore:', error);
+          // Fallback to localStorage if Firestore fails
+          const savedCart = localStorage.getItem('lumeapp-cart');
+          if (savedCart) {
+            try {
+              const localCartItems = JSON.parse(savedCart);
+              setCartItems(localCartItems);
+              // Migrate localStorage cart to Firestore
+              if (localCartItems.length > 0) {
+                await saveUserCart(currentUser.uid, localCartItems);
+                localStorage.removeItem('lumeapp-cart');
+              }
+            } catch (parseError) {
+              console.error('Error parsing localStorage cart:', parseError);
+              setCartItems([]);
+            }
+          } else {
+            setCartItems([]);
+          }
+        }
+        setIsLoading(false);
+      } else {
+        // Not authenticated, use localStorage
+        const savedCart = localStorage.getItem('lumeapp-cart');
+        if (savedCart) {
+          try {
+            setCartItems(JSON.parse(savedCart));
+          } catch (error) {
+            console.error('Error loading cart from localStorage:', error);
+            setCartItems([]);
+          }
+        } else {
+          setCartItems([]);
+        }
       }
-    }
-  }, []);
+    };
 
-  // Save cart to localStorage whenever cartItems change
+    loadUserCart();
+  }, [currentUser]);
+
+  // Save cart to Firestore or localStorage whenever cartItems change
   useEffect(() => {
-    localStorage.setItem('lumeapp-cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    const saveCart = async () => {
+      if (currentUser) {
+        // User is authenticated, save to Firestore
+        try {
+          await saveUserCart(currentUser.uid, cartItems);
+        } catch (error) {
+          console.error('Error saving cart to Firestore:', error);
+          // Fallback to localStorage if Firestore fails
+          localStorage.setItem('lumeapp-cart', JSON.stringify(cartItems));
+        }
+      } else {
+        // User not authenticated, save to localStorage
+        localStorage.setItem('lumeapp-cart', JSON.stringify(cartItems));
+      }
+    };
+
+    // Only save if we're not in the initial loading state
+    if (!isLoading) {
+      saveCart();
+    }
+  }, [cartItems, currentUser, isLoading]);
 
   const addToCart = (product, selectedSize = null) => {
     // Security check: Ensure product data is valid
@@ -41,12 +103,20 @@ export function CartProvider({ children }) {
       );
 
       if (existingItem) {
+        showNotification(
+          `${product.name}${selectedSize ? ` (${selectedSize})` : ''} quantity updated in cart!`,
+          'success'
+        );
         return prevItems.map(item =>
           item.id === product.id && item.selectedSize === selectedSize
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       } else {
+        showNotification(
+          `${product.name}${selectedSize ? ` (${selectedSize})` : ''} added to cart!`,
+          'success'
+        );
         return [...prevItems, {
           id: product.id,
           name: product.name,
@@ -83,8 +153,15 @@ export function CartProvider({ children }) {
     );
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
     setCartItems([]);
+    if (currentUser) {
+      try {
+        await clearUserCart(currentUser.uid);
+      } catch (error) {
+        console.error('Error clearing cart in Firestore:', error);
+      }
+    }
   };
 
   const getTotalItems = () => {
@@ -115,7 +192,8 @@ export function CartProvider({ children }) {
     getTotalPrice,
     getItemQuantity,
     isCartOpen,
-    setIsCartOpen
+    setIsCartOpen,
+    isLoading
   };
 
   return (
