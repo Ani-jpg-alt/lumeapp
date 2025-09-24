@@ -18,7 +18,7 @@ export default function Checkout() {
     address: '',
     city: '',
     postalCode: '',
-    gateway: 'payfast'
+    gateway: 'yoco'
   });
 
   useEffect(() => {
@@ -403,7 +403,7 @@ export default function Checkout() {
 
                 <h3 style={{ color: '#333', marginBottom: '1rem' }}>Payment Method</h3>
                 <div style={{ marginBottom: '2rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+                  {/* <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
                     <input
                       type="radio"
                       name="gateway"
@@ -412,7 +412,7 @@ export default function Checkout() {
                       onChange={handleInputChange}
                     />
                     <span>PayFast (Sandbox)</span>
-                  </label>
+                  </label> */}
                   <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     <input
                       type="radio"
@@ -464,10 +464,43 @@ export default function Checkout() {
                     fontSize: '1.1rem',
                     fontWeight: 'bold',
                     cursor: loading ? 'not-allowed' : 'pointer',
-                    opacity: loading ? 0.7 : 1
+                    opacity: loading ? 0.7 : 1,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.5rem'
                   }}
                 >
-                  {loading ? 'Processing...' : `Pay R${getTotalPrice().toFixed(2)}`}
+{loading ? (
+                    <>
+                      <span>Redirecting</span>
+                      <div style={{ display: 'flex', gap: '2px' }}>
+                        <div style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: 'white',
+                          animation: 'dot1 1.4s infinite ease-in-out both'
+                        }}></div>
+                        <div style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: 'white',
+                          animation: 'dot2 1.4s infinite ease-in-out both'
+                        }}></div>
+                        <div style={{
+                          width: '6px',
+                          height: '6px',
+                          borderRadius: '50%',
+                          backgroundColor: 'white',
+                          animation: 'dot3 1.4s infinite ease-in-out both'
+                        }}></div>
+                      </div>
+                    </>
+                  ) : (
+                    `Pay R${getTotalPrice().toFixed(2)}`
+                  )}
                 </button>
               </form>
             </div>
@@ -525,6 +558,49 @@ export default function Checkout() {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes dot1 {
+          0%, 80%, 100% {
+            transform: scale(0);
+            opacity: 0.5;
+          }
+          40% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes dot2 {
+          0%, 80%, 100% {
+            transform: scale(0);
+            opacity: 0.5;
+          }
+          40% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes dot3 {
+          0%, 80%, 100% {
+            transform: scale(0);
+            opacity: 0.5;
+          }
+          40% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        [style*="animation: dot2"] {
+          animation-delay: -1.1s !important;
+        }
+
+        [style*="animation: dot3"] {
+          animation-delay: -0.9s !important;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getOrder, updateOrderStatus } from '../services/firestoreService';
+import { getOrder } from '../services/firestoreService';
 import { useAuth } from '../contexts/AuthContext';
+import { paymentWebhookService } from '../services/paymentWebhookService';
 
 export default function OrderSuccess() {
   const { orderId } = useParams();
@@ -10,43 +11,111 @@ export default function OrderSuccess() {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [verificationStatus, setVerificationStatus] = useState({
+    verified: false,
+    status: 'pending',
+    attempts: 0,
+    lastAttempt: null
+  });
 
   useEffect(() => {
-    const fetchOrder = async () => {
+    const verifyPaymentAndFetchOrder = async () => {
       try {
+        // console.log(`🔍 Starting secure payment verification for order: ${orderId}`);
+
+        // 1. First get the order from local database
         const orderData = await getOrder(orderId);
-        
-        // Security check: Ensure the order belongs to the current user
+
+        // 2. Security check: Ensure the order belongs to the current user
         if (orderData.userId !== currentUser?.uid) {
           setError('Access denied. This order does not belong to you.');
           setLoading(false);
           return;
         }
-        
+
         setOrder(orderData);
-        
-        // Simulate payment success and update order status
-        // In a real app, this would be handled by webhook callbacks
-        if (orderData.status === 'pending') {
-          setTimeout(async () => {
-            try {
-              await updateOrderStatus(orderId, 'paid');
-              setOrder(prev => ({ ...prev, status: 'paid' }));
-            } catch (error) {
-              console.error('Error updating order status:', error);
-            }
-          }, 2000);
+        // console.log(`📋 Order loaded. Current status: ${orderData.status}`);
+
+        // 3. Verify payment status with server (this is the secure part!)
+        // console.log('🔐 Verifying payment with server...');
+        setVerificationStatus(prev => ({
+          ...prev,
+          attempts: prev.attempts + 1,
+          lastAttempt: new Date()
+        }));
+
+        const verificationResult = await paymentWebhookService.verifyPaymentStatus(orderId);
+
+        // console.log('✅ Payment verification result:', verificationResult);
+
+        // 4. Update verification status
+        setVerificationStatus({
+          verified: verificationResult.verified,
+          status: verificationResult.status,
+          attempts: verificationStatus.attempts + 1,
+          lastAttempt: new Date(),
+          serverData: verificationResult.serverData
+        });
+
+        // 5. Update local order with verified status
+        if (verificationResult.verified && verificationResult.status !== orderData.status) {
+          // console.log(`🔄 Updating local order status: ${orderData.status} → ${verificationResult.status}`);
+          setOrder(prev => ({
+            ...prev,
+            status: verificationResult.status,
+            verifiedByWebhook: true,
+            verificationTime: new Date()
+          }));
         }
+
+        // 6. If payment is still pending, start polling
+        if (verificationResult.status === 'pending' && verificationResult.verified === false) {
+          // console.log('⏳ Payment still pending, starting polling...');
+
+          try {
+            const pollingResult = await paymentWebhookService.pollPaymentStatus(orderId, 6, 5000);
+
+            // console.log('🎉 Polling completed:', pollingResult);
+
+            setVerificationStatus({
+              verified: pollingResult.verified,
+              status: pollingResult.status,
+              attempts: verificationStatus.attempts + 6,
+              lastAttempt: new Date(),
+              serverData: pollingResult.serverData
+            });
+
+            setOrder(prev => ({
+              ...prev,
+              status: pollingResult.status,
+              verifiedByWebhook: true,
+              verificationTime: new Date()
+            }));
+
+          } catch (pollingError) {
+            // console.error('⚠️ Payment polling failed:', pollingError);
+            setVerificationStatus(prev => ({
+              ...prev,
+              error: 'Unable to confirm payment status'
+            }));
+          }
+        }
+
       } catch (error) {
-        setError('Order not found');
-        console.error('Error fetching order:', error);
+        // console.error('❌ Payment verification failed:', error);
+        setError(`Unable to verify payment status. Please contact support if needed.`);
+        setVerificationStatus(prev => ({
+          ...prev,
+          verified: false,
+          error: 'Payment verification unavailable'
+        }));
       } finally {
         setLoading(false);
       }
     };
 
     if (orderId && currentUser) {
-      fetchOrder();
+      verifyPaymentAndFetchOrder();
     } else if (!currentUser) {
       setError('You must be logged in to view this order.');
       setLoading(false);
@@ -152,14 +221,55 @@ export default function OrderSuccess() {
             ✓
           </div>
           <h1 style={{ color: '#e91e63', marginBottom: '0.5rem' }}>
-            {order.status === 'paid' ? 'Payment Successful!' : 'Order Received!'}
+            {verificationStatus.verified && verificationStatus.status === 'paid'
+              ? 'Payment Successful!'
+              : verificationStatus.status === 'failed'
+                ? 'Payment Not Completed'
+                : 'Confirming Your Payment...'
+            }
           </h1>
           <p style={{ color: '#666', fontSize: '1.1rem' }}>
-            {order.status === 'paid' 
-              ? 'Your payment has been processed successfully.' 
-              : 'Your order is being processed. Payment confirmation pending...'
+            {verificationStatus.verified && verificationStatus.status === 'paid'
+              ? 'Thank you! Your payment has been processed successfully.'
+              : verificationStatus.status === 'failed'
+                ? 'Your payment could not be completed. Please try again or contact support.'
+                : 'Please wait while we confirm your payment...'
             }
           </p>
+
+          {/* Verification Status Indicator */}
+          <div style={{
+            marginTop: '1rem',
+            padding: '0.5rem 1rem',
+            borderRadius: '20px',
+            background: verificationStatus.verified && verificationStatus.status === 'paid'
+              ? '#e8f5e8'
+              : verificationStatus.status === 'failed'
+                ? '#ffeaea'
+                : '#fff3cd',
+            color: verificationStatus.verified && verificationStatus.status === 'paid'
+              ? '#2e7d32'
+              : verificationStatus.status === 'failed'
+                ? '#c62828'
+                : '#f57c00',
+            fontSize: '0.9rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem'
+          }}>
+            {verificationStatus.verified && verificationStatus.status === 'paid'
+              ? '✅ Payment Confirmed'
+              : verificationStatus.status === 'failed'
+                ? '❌ Payment Failed'
+                : '🔍 Confirming Payment...'
+            }
+            {verificationStatus.attempts > 0 && (
+              <span style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+                (Attempt {verificationStatus.attempts})
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Order Details */}
@@ -177,15 +287,22 @@ export default function OrderSuccess() {
               <h3 style={{ color: '#333', marginBottom: '0.5rem' }}>Order Information</h3>
               <div style={{ background: '#f8f9fa', padding: '1rem', borderRadius: '8px' }}>
                 <p style={{ margin: '0.25rem 0' }}><strong>Order ID:</strong> {order.id}</p>
-                <p style={{ margin: '0.25rem 0' }}><strong>Status:</strong> 
+                <p style={{ margin: '0.25rem 0' }}><strong>Status:</strong>
                   <span style={{
-                    color: order.status === 'paid' ? '#4caf50' : '#ff9800',
+                    color: verificationStatus.status === 'paid' ? '#4caf50' :
+                           verificationStatus.status === 'failed' ? '#f44336' : '#ff9800',
                     fontWeight: 'bold',
                     marginLeft: '0.5rem'
                   }}>
-                    {order.status.toUpperCase()}
+                    {verificationStatus.status.toUpperCase()}
+                    {verificationStatus.verified && verificationStatus.status === 'paid' ? ' ✓' : ''}
                   </span>
                 </p>
+                {verificationStatus.verified && (
+                  <p style={{ margin: '0.25rem 0', fontSize: '0.9rem', color: '#4caf50' }}>
+                    <strong>✅ Payment Confirmed:</strong> {verificationStatus.lastAttempt?.toLocaleTimeString()}
+                  </p>
+                )}
                 <p style={{ margin: '0.25rem 0' }}><strong>Date:</strong> {new Date(order.createdAt?.seconds * 1000).toLocaleDateString()}</p>
                 <p style={{ margin: '0.25rem 0' }}><strong>Payment Method:</strong> {order.gateway.toUpperCase()}</p>
               </div>

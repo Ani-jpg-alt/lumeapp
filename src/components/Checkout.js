@@ -18,7 +18,7 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
     address: '',
     city: '',
     postalCode: '',
-    gateway: 'payfast'
+    gateway: 'yoco'
   });
   
   // Determine if this is a single product checkout or cart checkout
@@ -219,34 +219,31 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
 
   const redirectToYoco = async (orderId, items, deliveryDetails, totalAmount) => {
     try {
-      showNotification('Creating Yoco payment...', 'info');
-      setError('Creating payment...');
+      // User-friendly messages only
 
       // Create payment intent with backend server
       const paymentIntent = await createYocoPaymentIntent(orderId, items, deliveryDetails, totalAmount);
 
       if (paymentIntent.redirectUrl) {
-        showNotification('Redirecting to Yoco...', 'info');
+        // Will show loader in button
 
         // Close modal before redirecting
         if (onClose) {
           onClose();
         }
 
-        // Small delay to show notification
+        // Small delay to show loader
         setTimeout(() => {
-          // Redirect to Yoco's hosted payment page
-          console.log('Redirecting to Yoco:', paymentIntent.redirectUrl);
           window.location.href = paymentIntent.redirectUrl;
-        }, 500);
+        }, 1500);
       } else {
         throw new Error('No redirect URL received from payment intent');
       }
 
     } catch (error) {
       console.error('Error initiating Yoco payment:', error);
-      setError('Failed to initiate payment: ' + error.message);
-      showNotification('Failed to create payment. Please try again.', 'error');
+      setError('Unable to process payment. Please try again.');
+      showNotification('Payment setup failed. Please try again.', 'error');
       setLoading(false);
     }
   };
@@ -496,7 +493,7 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
 
           <h3 style={{ color: '#333', marginBottom: '1rem' }}>Payment Method</h3>
           <div style={{ marginBottom: '2rem' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
+            {/* <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
               <input
                 type="radio"
                 name="gateway"
@@ -505,7 +502,7 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
                 onChange={handleInputChange}
               />
               <span>PayFast (Sandbox)</span>
-            </label>
+            </label> */}
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <input
                 type="radio"
@@ -550,22 +547,107 @@ export default function Checkout({ product, cartItems, onClose, onSuccess }) {
             style={{
               width: '100%',
               padding: '1rem',
-              background: 'linear-gradient(135deg, #e91e63, #f8e8ff)',
+              background: loading
+                ? 'linear-gradient(135deg, #e91e63, #c2185b)'
+                : 'linear-gradient(135deg, #e91e63, #f8e8ff)',
               color: 'white',
               border: 'none',
               borderRadius: '8px',
               fontSize: '1.1rem',
               fontWeight: 'bold',
               cursor: loading ? 'not-allowed' : 'pointer',
-              opacity: loading ? 0.7 : 1
+              opacity: loading ? 0.9 : 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem'
             }}
           >
-            {loading ? 'Processing...' : `Pay R${items.reduce((total, item) => {
-              const price = parseFloat(item.price.replace('R', ''));
-              const quantity = item.quantity || 1;
-              return total + (price * quantity);
-            }, 0).toFixed(2)}`}
+            {loading ? (
+              <>
+                <span>Redirecting</span>
+                <div style={{ display: 'flex', gap: '2px' }}>
+                  <div style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    animation: 'dot1 1.4s infinite ease-in-out both'
+                  }}></div>
+                  <div style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    animation: 'dot2 1.4s infinite ease-in-out both'
+                  }}></div>
+                  <div style={{
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    animation: 'dot3 1.4s infinite ease-in-out both'
+                  }}></div>
+                </div>
+              </>
+            ) : (
+              `Pay R${items.reduce((total, item) => {
+                const price = parseFloat(item.price.replace('R', ''));
+                const quantity = item.quantity || 1;
+                return total + (price * quantity);
+              }, 0).toFixed(2)}`
+            )}
           </button>
+
+          {/* Animation CSS */}
+          <style jsx>{`
+            @keyframes dot1 {
+              0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+              }
+              40% {
+                transform: scale(1);
+                opacity: 1;
+              }
+            }
+            @keyframes dot2 {
+              0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+              }
+              40% {
+                transform: scale(1);
+                opacity: 1;
+              }
+            }
+            @keyframes dot3 {
+              0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+              }
+              40% {
+                transform: scale(1);
+                opacity: 1;
+              }
+            }
+
+            @keyframes dot2 {
+              0%, 80%, 100% {
+                transform: scale(0);
+                opacity: 0.5;
+              }
+              40% {
+                transform: scale(1);
+                opacity: 1;
+              }
+            }
+
+            /* Stagger the animations */
+            button div div:nth-child(1) { animation-delay: -0.32s; }
+            button div div:nth-child(2) { animation-delay: -0.16s; }
+            button div div:nth-child(3) { animation-delay: 0s; }
+          `}</style>
         </form>
       </div>
     </div>

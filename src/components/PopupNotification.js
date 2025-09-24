@@ -17,31 +17,54 @@ const PopupNotification = ({ message, type = 'success', duration = 3000, onClose
     setTimeout(() => onClose && onClose(), 300);
   };
 
-  const getBackgroundColor = () => {
+  const getStyles = () => {
     switch (type) {
       case 'success':
-        return 'linear-gradient(135deg, #4CAF50, #8BC34A)';
+        return {
+          background: 'white',
+          color: '#e91e63',
+          border: '2px solid #e91e63'
+        };
       case 'error':
-        return 'linear-gradient(135deg, #f44336, #FF5722)';
+        return {
+          background: 'white',
+          color: '#f44336',
+          border: '2px solid #f44336'
+        };
       case 'info':
-        return 'linear-gradient(135deg, #2196F3, #03A9F4)';
+        return {
+          background: 'white',
+          color: '#2196F3',
+          border: '2px solid #2196F3'
+        };
       case 'warning':
-        return 'linear-gradient(135deg, #FF9800, #FFC107)';
+        return {
+          background: 'white',
+          color: '#FF9800',
+          border: '2px solid #FF9800'
+        };
       default:
-        return 'linear-gradient(135deg, #e91e63, #f8e8ff)';
+        return {
+          background: 'white',
+          color: '#e91e63',
+          border: '2px solid #e91e63'
+        };
     }
   };
+
+  const styles = getStyles();
 
   return (
     <div style={{
       position: 'fixed',
       top: '20px',
       right: '20px',
-      background: getBackgroundColor(),
-      color: 'white',
+      background: styles.background,
+      color: styles.color,
+      border: styles.border,
       padding: '1rem 1.5rem',
       borderRadius: '12px',
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.15)',
       zIndex: 10000,
       display: 'flex',
       alignItems: 'center',
@@ -50,18 +73,19 @@ const PopupNotification = ({ message, type = 'success', duration = 3000, onClose
       maxWidth: '400px',
       transform: isVisible ? 'translateX(0)' : 'translateX(100%)',
       opacity: isVisible ? 1 : 0,
-      transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-      backdropFilter: 'blur(10px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)'
+      transition: 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)'
     }}>
       <div style={{
-        background: 'rgba(255, 255, 255, 0.2)',
+        background: styles.color,
+        color: 'white',
         borderRadius: '50%',
         padding: '8px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '1.2rem'
+        fontSize: '1.2rem',
+        minWidth: '32px',
+        minHeight: '32px'
       }}>
         {type === 'success' && '✓'}
         {type === 'error' && '✕'}
@@ -73,7 +97,7 @@ const PopupNotification = ({ message, type = 'success', duration = 3000, onClose
         <p style={{
           margin: 0,
           fontSize: '0.95rem',
-          fontWeight: '500',
+          fontWeight: '600',
           lineHeight: '1.4'
         }}>
           {message}
@@ -83,9 +107,9 @@ const PopupNotification = ({ message, type = 'success', duration = 3000, onClose
       <button
         onClick={handleClose}
         style={{
-          background: 'rgba(255, 255, 255, 0.2)',
-          border: 'none',
-          color: 'white',
+          background: 'transparent',
+          border: `1px solid ${styles.color}`,
+          color: styles.color,
           borderRadius: '50%',
           width: '24px',
           height: '24px',
@@ -95,10 +119,16 @@ const PopupNotification = ({ message, type = 'success', duration = 3000, onClose
           justifyContent: 'center',
           fontSize: '14px',
           fontWeight: 'bold',
-          transition: 'background 0.2s'
+          transition: 'all 0.2s'
         }}
-        onMouseEnter={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.3)'}
-        onMouseLeave={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.2)'}
+        onMouseEnter={(e) => {
+          e.target.style.background = styles.color;
+          e.target.style.color = 'white';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = 'transparent';
+          e.target.style.color = styles.color;
+        }}
       >
         ×
       </button>
