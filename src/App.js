@@ -4,6 +4,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import { NotificationProvider } from './contexts/NotificationContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -22,6 +23,7 @@ import Cart from './pages/Cart';
 import OrderSuccess from './pages/OrderSuccess';
 import Checkout from './pages/Checkout';
 import Orders from './pages/Orders';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   return (
@@ -64,6 +66,11 @@ function App() {
                   <ProtectedRoute>
                     <OrderSuccess />
                   </ProtectedRoute>
+                } />
+                <Route path="/admin" element={
+                  <AdminRoute>
+                    <AdminDashboard />
+                  </AdminRoute>
                 } />
               </Routes>
             </main>

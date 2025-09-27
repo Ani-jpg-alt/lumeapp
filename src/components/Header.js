@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import CartIcon from './CartIcon';
 
 function Header() {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, isAdmin, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -93,6 +93,9 @@ function Header() {
             {currentUser && (
               <li><Link to="/orders">My Orders</Link></li>
             )}
+            {isAdmin && (
+              <li><Link to="/admin" style={{color: '#ff6b35', fontWeight: 'bold'}}>Admin Dashboard</Link></li>
+            )}
             <li style={{display: 'flex', gap: '15px', alignItems: 'center'}}>
               <a href="https://www.instagram.com/by.langelihle/" target="_blank" rel="noopener noreferrer" style={{color: '#333', textDecoration: 'none', transition: 'color 0.2s ease'}} onMouseOver={(e) => e.target.style.color = '#e91e63'} onMouseOut={(e) => e.target.style.color = '#333'}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -134,6 +137,9 @@ function Header() {
               <li><Link to="/contact" onClick={closeMenu}>Contact</Link></li>
               {currentUser && (
                 <li><Link to="/orders" onClick={closeMenu}>My Orders</Link></li>
+              )}
+              {isAdmin && (
+                <li><Link to="/admin" onClick={closeMenu} style={{color: '#ff6b35', fontWeight: 'bold'}}>Admin Dashboard</Link></li>
               )}
             </ul>
 

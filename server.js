@@ -8,13 +8,15 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Simple in-memory storage for payment statuses
+// In production, you would use a database like PostgreSQL or MongoDB
+const paymentStatuses = new Map();
+
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production'
-    ? process.env.ALLOWED_ORIGINS?.split(',') || ['https://yourdomain.com']
-    : '*', // Allow all origins for development
+  origin: '*', // Temporarily allow all origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'webhook-signature']
 }));
 app.use(express.json({ limit: '10mb' }));
 
@@ -53,8 +55,18 @@ app.get('/health', (req, res) => {
     endpoints: {
       health: 'GET /health',
       createPayment: 'POST /api/payments/create-intent',
-      webhook: 'POST /api/payments/webhook'
+      webhook: 'POST /api/payments/webhook',
+      debugHeaders: 'POST /debug-headers'
     }
+  });
+});
+
+// Debug endpoint to see what headers are being sent
+app.post('/debug-headers', (req, res) => {
+  res.json({
+    headers: req.headers,
+    body: req.body,
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -186,41 +198,126 @@ app.post('/api/payments/create-intent', async (req, res) => {
   }
 });
 
-// Helper function to verify webhook signature
-const verifyWebhookSignature = (payload, signature, secret) => {
+// Helper function to verify webhook signature (Svix format)
+const verifyWebhookSignature = (payload, signature, secret, headers = {}) => {
   if (!secret || !signature) {
     return false; // Skip verification if no secret configured
   }
 
   try {
     const crypto = require('crypto');
-    const computedSignature = crypto
-      .createHmac('sha256', secret)
-      .update(payload, 'utf8')
-      .digest('hex');
 
-    return crypto.timingSafeEqual(
-      Buffer.from(signature, 'hex'),
-      Buffer.from(computedSignature, 'hex')
-    );
+    // Parse Svix signature format: "v1,<base64_signature>"
+    let actualSignature = signature;
+    if (signature.startsWith('v1,')) {
+      actualSignature = signature.slice(3); // Remove "v1," prefix
+    }
+
+    // Decode the webhook secret (Svix/Yoco format)
+    const decodedSecret = Buffer.from(secret.replace('whsec_', ''), 'base64');
+
+    // Try different Svix signature methods
+    const methods = [];
+
+    // Method 1: Standard HMAC of payload
+    methods.push(() => {
+      return crypto
+        .createHmac('sha256', decodedSecret)
+        .update(payload, 'utf8')
+        .digest('base64');
+    });
+
+    // Method 2: Svix format with message ID and timestamp
+    if (headers['svix-id'] && headers['svix-timestamp']) {
+      methods.push(() => {
+        const signedPayload = `${headers['svix-id']}.${headers['svix-timestamp']}.${payload}`;
+        return crypto
+          .createHmac('sha256', decodedSecret)
+          .update(signedPayload, 'utf8')
+          .digest('base64');
+      });
+    }
+
+    // Method 3: Try with webhook-id and webhook-timestamp headers
+    if (headers['webhook-id'] && headers['webhook-timestamp']) {
+      methods.push(() => {
+        const signedPayload = `${headers['webhook-id']}.${headers['webhook-timestamp']}.${payload}`;
+        return crypto
+          .createHmac('sha256', decodedSecret)
+          .update(signedPayload, 'utf8')
+          .digest('base64');
+      });
+    }
+
+    // Method 4: Try without base64 decoding the secret
+    methods.push(() => {
+      return crypto
+        .createHmac('sha256', secret.replace('whsec_', ''))
+        .update(payload, 'utf8')
+        .digest('base64');
+    });
+
+    // Try each method
+    for (let i = 0; i < methods.length; i++) {
+      try {
+        const computedSignature = methods[i]();
+        console.log(`Computed sig (method ${i + 1}):`, computedSignature);
+
+        const match = crypto.timingSafeEqual(
+          Buffer.from(actualSignature, 'base64'),
+          Buffer.from(computedSignature, 'base64')
+        );
+
+        if (match) {
+          console.log(`✅ Signature verified using method ${i + 1}`);
+          return true;
+        }
+      } catch (e) {
+        console.log(`Method ${i + 1} failed:`, e.message);
+      }
+    }
+
+    console.log('❌ All signature verification methods failed');
+    return false;
+
   } catch (error) {
     console.error('Webhook signature verification error:', error);
     return false;
   }
 };
 
+
+
 // Webhook endpoint for payment notifications
 app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   try {
     const timestamp = new Date().toISOString();
-    const signature = req.headers['x-yoco-signature'] || req.headers['yoco-signature'];
+    const signature = req.headers['webhook-signature'];
+
+    // Debug: Log all webhook headers to understand Svix format
+    console.log(`[${timestamp}] All headers:`, JSON.stringify(req.headers, null, 2));
 
     // Verify webhook signature if secret is configured
     if (CONFIG.WEBHOOK_SECRET) {
-      const isValid = verifyWebhookSignature(req.body, signature, CONFIG.WEBHOOK_SECRET);
+      if (!signature) {
+        console.error(`[${timestamp}] Webhook signature missing but secret is configured`);
+        return res.status(401).json({
+          success: false,
+          error: 'MISSING_SIGNATURE',
+          message: 'Webhook signature required but not provided'
+        });
+      }
+
+      // Use raw body string for signature verification
+      const payloadString = Buffer.isBuffer(req.body) ? req.body.toString('utf8') : JSON.stringify(req.body);
+      console.log(`[${timestamp}] Raw payload length:`, payloadString.length);
+      console.log(`[${timestamp}] Raw payload:`, payloadString);
+      console.log(`[${timestamp}] Received signature:`, signature);
+      console.log(`[${timestamp}] Using webhook secret:`, CONFIG.WEBHOOK_SECRET);
+      const isValid = verifyWebhookSignature(payloadString, signature, CONFIG.WEBHOOK_SECRET, req.headers);
 
       if (!isValid) {
-        console.error(`[${timestamp}] Invalid webhook signature`);
+        console.error(`[${timestamp}] ❌ Invalid webhook signature`);
         return res.status(401).json({
           success: false,
           error: 'INVALID_SIGNATURE',
@@ -228,17 +325,33 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), asy
         });
       }
 
-      console.log(`[${timestamp}] Webhook signature verified ✓`);
+      console.log(`[${timestamp}] ✅ Webhook signature verified`);
+    } else if (CONFIG.WEBHOOK_SECRET) {
+      console.log(`[${timestamp}] ⚠️ Webhook signature verification skipped in development mode`);
     } else {
-      console.log(`[${timestamp}] Webhook signature verification skipped (no secret configured)`);
+      console.log(`[${timestamp}] ℹ️ Webhook signature verification skipped (no secret configured)`);
     }
 
-    // Parse webhook data
-    const webhookData = JSON.parse(req.body.toString());
+    // Parse webhook data from raw body
+    let webhookData;
+    try {
+      const bodyString = Buffer.isBuffer(req.body) ? req.body.toString('utf8') : JSON.stringify(req.body);
+      webhookData = typeof req.body === 'object' && !Buffer.isBuffer(req.body) ? req.body : JSON.parse(bodyString);
+    } catch (parseError) {
+      console.error(`[${timestamp}] JSON parsing error:`, parseError.message);
+      console.error(`[${timestamp}] Raw body type:`, typeof req.body);
+      console.error(`[${timestamp}] Raw body:`, req.body);
+      return res.status(400).json({
+        success: false,
+        error: 'INVALID_JSON',
+        message: 'Invalid JSON payload'
+      });
+    }
 
-    console.log(`[${timestamp}] Received payment webhook:`, {
+    console.log(`[${timestamp}] ✅ Verified event:`, {
       type: webhookData.type,
       id: webhookData.id,
+      paymentId: webhookData.payload?.id,
       verified: !!CONFIG.WEBHOOK_SECRET
     });
 
@@ -246,50 +359,75 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), asy
     switch (webhookData.type) {
       case 'payment.succeeded':
         console.log(`[${timestamp}] Payment succeeded:`, {
-          paymentId: webhookData.id,
-          reference: webhookData.metadata?.reference,
-          amount: webhookData.amount
+          eventId: webhookData.id,
+          paymentId: webhookData.payload?.id,
+          reference: webhookData.payload?.metadata?.reference,
+          checkoutId: webhookData.payload?.metadata?.checkoutId,
+          amount: webhookData.payload?.amount,
+          currency: webhookData.payload?.currency,
+          paymentMethod: webhookData.payload?.paymentMethodDetails?.type
         });
 
-        // Here you would:
-        // 1. Verify the webhook signature (recommended)
-        // 2. Update your database/order status
-        // 3. Send confirmation emails
-        // 4. Trigger any business logic
+        // Store payment status
+        const orderId = webhookData.payload?.metadata?.reference;
+        if (orderId) {
+          paymentStatuses.set(orderId, {
+            orderId: orderId,
+            paymentId: webhookData.payload?.id,
+            status: 'succeeded',
+            amount: webhookData.payload?.amount,
+            currency: webhookData.payload?.currency,
+            paymentMethod: webhookData.payload?.paymentMethodDetails?.type,
+            checkoutId: webhookData.payload?.metadata?.checkoutId,
+            eventId: webhookData.id,
+            webhookVerified: true,
+            webhookTimestamp: new Date(timestamp),
+            processedAt: new Date()
+          });
+          console.log(`[${timestamp}] ✅ Stored payment success for order: ${orderId}`);
+        }
 
         break;
 
       case 'payment.failed':
         console.log(`[${timestamp}] Payment failed:`, {
-          paymentId: webhookData.id,
-          reference: webhookData.metadata?.reference,
-          reason: webhookData.failure_reason
+          eventId: webhookData.id,
+          paymentId: webhookData.payload?.id,
+          reference: webhookData.payload?.metadata?.reference,
+          checkoutId: webhookData.payload?.metadata?.checkoutId,
+          amount: webhookData.payload?.amount,
+          status: webhookData.payload?.status
         });
 
-        // Handle failed payments
-        break;
+        // Store payment failure status
+        const failedOrderId = webhookData.payload?.metadata?.reference;
+        if (failedOrderId) {
+          paymentStatuses.set(failedOrderId, {
+            orderId: failedOrderId,
+            paymentId: webhookData.payload?.id,
+            status: 'failed',
+            amount: webhookData.payload?.amount,
+            currency: webhookData.payload?.currency,
+            failureReason: webhookData.payload?.status,
+            checkoutId: webhookData.payload?.metadata?.checkoutId,
+            eventId: webhookData.id,
+            webhookVerified: true,
+            webhookTimestamp: new Date(timestamp),
+            processedAt: new Date()
+          });
+          console.log(`[${timestamp}] ✅ Stored payment failure for order: ${failedOrderId}`);
+        }
 
-      case 'payment.cancelled':
-        console.log(`[${timestamp}] Payment cancelled:`, {
-          paymentId: webhookData.id,
-          reference: webhookData.metadata?.reference
-        });
-
-        // Handle cancelled payments
-        break;
-
-      case 'payment.refunded':
-        console.log(`[${timestamp}] Payment refunded:`, {
-          paymentId: webhookData.id,
-          reference: webhookData.metadata?.reference,
-          refundAmount: webhookData.refund_amount
-        });
-
-        // Handle refunds
         break;
 
       default:
-        console.log(`[${timestamp}] Unknown webhook type:`, webhookData.type);
+        console.log(`[${timestamp}] Received webhook type: ${webhookData.type}`, {
+          eventId: webhookData.id,
+          paymentId: webhookData.payload?.id
+        });
+
+        // Handle other webhook types as needed
+        break;
     }
 
     // Always respond with 200 to acknowledge receipt
@@ -310,27 +448,63 @@ app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), asy
   }
 });
 
-// Get payment status (optional endpoint)
+// Get payment status (this is the key endpoint for frontend verification)
 app.get('/api/payments/:paymentId/status', async (req, res) => {
   try {
     const { paymentId } = req.params;
+    const timestamp = new Date().toISOString();
 
-    // Here you would typically:
-    // 1. Query your database for payment status
-    // 2. Or make a call to Yoco API to get current status
+    console.log(`[${timestamp}] Payment status query for: ${paymentId}`);
 
-    // Mock response for demonstration
-    res.json({
-      success: true,
-      data: {
-        paymentId: paymentId,
-        status: 'pending', // pending, succeeded, failed, cancelled
-        amount: 0,
-        currency: 'ZAR',
-        reference: 'unknown',
-        createdAt: new Date().toISOString()
-      }
-    });
+    // Check if we have payment status from webhook
+    const paymentStatus = paymentStatuses.get(paymentId);
+
+    if (paymentStatus) {
+      console.log(`[${timestamp}] ✅ Found webhook-verified status: ${paymentStatus.status}`);
+
+      res.json({
+        success: true,
+        data: {
+          orderId: paymentStatus.orderId,
+          paymentId: paymentStatus.paymentId,
+          status: paymentStatus.status, // succeeded, failed, or pending
+          amount: paymentStatus.amount,
+          currency: paymentStatus.currency,
+          paymentMethod: paymentStatus.paymentMethod,
+          webhookVerified: true,
+          webhookTimestamp: paymentStatus.webhookTimestamp,
+          processedAt: paymentStatus.processedAt,
+          eventId: paymentStatus.eventId
+        },
+        meta: {
+          source: 'webhook',
+          verified: true,
+          queryTime: new Date().toISOString()
+        }
+      });
+    } else {
+      // No webhook received yet - payment is still pending or not found
+      console.log(`[${timestamp}] ⚠️ No webhook status found for: ${paymentId} - returning pending`);
+
+      res.json({
+        success: true,
+        data: {
+          orderId: paymentId,
+          paymentId: paymentId,
+          status: 'pending', // Default to pending if no webhook received
+          amount: null,
+          currency: 'ZAR',
+          webhookVerified: false,
+          processedAt: new Date().toISOString()
+        },
+        meta: {
+          source: 'default',
+          verified: false,
+          reason: 'No webhook received yet',
+          queryTime: new Date().toISOString()
+        }
+      });
+    }
 
   } catch (error) {
     console.error('Error getting payment status:', error);

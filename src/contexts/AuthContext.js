@@ -17,6 +17,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   function signup(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -30,9 +31,24 @@ export function AuthProvider({ children }) {
     return signOut(auth);
   }
 
+  function checkAdminStatus(user) {
+    if (!user) {
+      setIsAdmin(false);
+      return;
+    }
+
+    const adminEmail = process.env.REACT_APP_ADMIN_EMAIL;
+    const adminUID = process.env.REACT_APP_ADMIN_UID;
+
+    // Check if user is admin by email or UID
+    const isAdminUser = user.email === adminEmail || user.uid === adminUID;
+    setIsAdmin(isAdminUser);
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      checkAdminStatus(user);
       setLoading(false);
     });
 
@@ -41,6 +57,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     currentUser,
+    isAdmin,
     signup,
     login,
     logout
